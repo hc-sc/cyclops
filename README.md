@@ -1,4 +1,4 @@
-# :maple_leaf: :eyes: Cyclops project :maple_leaf: :eyes:
+# :maple_leaf: :eyes: Cyclops project  :eyes: :maple_leaf:
 
 The objective of this repository is to:
 - share code between STC and HC.
