@@ -2,7 +2,7 @@
 
 The objective of this repository is to:
 - share code between STC and HC.
-- keep track of the progress.
+- keep track of the progress of the project.
 
 # Description 
 
