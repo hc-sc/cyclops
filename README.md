@@ -8,7 +8,7 @@ The objective of this repository is to:
 
 -The project is proposing to create a new process enabled by a digital-tool to virtualize optically represented text on the label, query the data via existing databases, identify and highlight instances of non-compliances, and visually depict the issue by overlaying the information back on to the camera/device feed. This will allow inspectors to review the labels on-site, without the need to collect samples and invest more time into the inspection. 
 
-- As a small scale proof of concept, a solution can be developed by using the minimal viable product model for Natural Health Products and targeted for Inspectors in the Health Product Compliance and the Border Centres for testing. 
+-As a small scale proof of concept, a solution can be developed by using the minimal viable product model for Natural Health Products and targeted for Inspectors in the Health Product Compliance and the Border Centres for testing. 
 
 # Stages
 
@@ -21,6 +21,7 @@ Note: A continuous integration and continuous deployment model will be implement
 # Timelines
 
 ########################## No. 1 ################################## 
+
 Tender RFP for Professional Services 					        July 31, 2019
 
 Select and Issue TA for Professional Services			    Sep 30, 2019
@@ -29,6 +30,7 @@ Clarification from Legal								              Sep 1, 2019
 
 
 ########################## No. 2 ################################## 
+
 Re-grouping Text Content 								              Oct 1, 2019
 
 Classifying Local Groupings							          	  Jan 31, 2019
@@ -39,6 +41,7 @@ Assessment of Claims Compliance 						          Jan 31, 2019
 
 
 ########################## No. 3 ################################## 
+
 Production Environment 								              	Jan 1, 2020
 
 OCR Extraction 											                  Jan 31, 2020
@@ -55,6 +58,7 @@ Implement Licensing and Ingredient Validation Steps 	April 30, 2020
 
 
 ########################## No. 4 ################################## 
+
 Final Product review 									                May 31, 2020
 
 Identify Possibilities for Increase in Scope 			    Jun 30, 2020
