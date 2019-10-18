@@ -22,50 +22,50 @@ Note: A continuous integration and continuous deployment model will be implement
 
 ########################## No. 1 ################################## 
 
-Tender RFP for Professional Services 					        July 31, 2019
+Tender RFP for Professional Services                  July 31, 2019
 
-Select and Issue TA for Professional Services			    Sep 30, 2019
+Select and Issue TA for Professional Services         Sep 30, 2019
 
-Clarification from Legal								              Sep 1, 2019
+Clarification from Legal                              Sep 1, 2019
 
 
 ########################## No. 2 ################################## 
 
-Re-grouping Text Content 								              Oct 1, 2019
+Re-grouping Text Content                              Oct 1, 2019
 
-Classifying Local Groupings							          	  Jan 31, 2019
+Classifying Local Groupings                           Jan 31, 2019
 
-Access the Data for Compliance Verification				    Oct 1, 2019
+Access the Data for Compliance Verification           Oct 1, 2019
 
-Assessment of Claims Compliance 						          Jan 31, 2019
+Assessment of Claims Compliance                       Jan 31, 2019
 
 
 ########################## No. 3 ################################## 
 
-Production Environment 								              	Jan 1, 2020
+Production Environment                                Jan 1, 2020
 
-OCR Extraction 											                  Jan 31, 2020
+OCR Extraction                                        Jan 31, 2020
 
-Additional Image Screening For Quality Issues			    Jan 31, 2020
+Additional Image Screening For Quality Issues         Jan 31, 2020
 
-Additional Correcting Image Distortion					      Jan 31, 2020
+Additional Correcting Image Distortion                Jan 31, 2020
 
-Implement Language Content Detection Model 				    Feb 28, 2020
+Implement Language Content Detection Model            Feb 28, 2020
 
-Integrate Machine Learning Models Developed in 2.0 		March 31, 2020 
+Integrate Machine Learning Models Developed in 2.0    March 31, 2020 
 
-Implement Licensing and Ingredient Validation Steps 	April 30, 2020
+Implement Licensing and Ingredient Validation Steps   April 30, 2020
 
 
 ########################## No. 4 ################################## 
 
-Final Product review 									                May 31, 2020
+Final Product review                                  May 31, 2020
 
-Identify Possibilities for Increase in Scope 			    Jun 30, 2020
+Identify Possibilities for Increase in Scope          Jun 30, 2020
 
-Prepare Project Closure Documents 					    	    July 31, 2020 
+Prepare Project Closure Documents                     July 31, 2020 
 
-Present Report to Solutions Fund Review Board			    Jul 2020
+Present Report to Solutions Fund Review Board         July 2020
 
 
 
