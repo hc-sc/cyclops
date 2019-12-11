@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographUse" table="monograph_uses" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monouse_id">
+       		<generator class="sequence">
+                <param name="sequence">monograph_uses_seq</param>
+       		</generator>
+    	</id> 
+
+        <property name="code" type="string" length="20" column="code" not-null="true"/>
+        <!-- orig mapping back to parent 
+        <set name="sharedMonographs" inverse="true" sort="natural" table="monograph_uses_shrd_monographs">
+			<key column="monouse_id"/>
+			<many-to-many column="mono_id" class="Monograph"/>
+		</set>
+		-->
+		<set name="monographs" inverse="true" sort="natural" table="monograph_uses_monographs">
+		    <cache usage="read-write"/>
+			<key column="monouse_id"/>
+			<many-to-many column="mono_id" class="Monograph"/>
+		</set>
+        
+        <property name="sortOrder" type="long" column="monouse_sort_order"/>
+        <property name="longStatementE" type="string" column="monouse_stmt_long_eng"/>
+        <property name="longStatementF" type="string" column="monouse_stmt_long_fr"/>        
+        <property name="shortStatementE" type="string" column="monouse_stmt_short_eng"/>
+        <property name="shortStatementF" type="string" column="monouse_stmt_short_fr"/>        
+        <many-to-one name="useType" column="usetype_id"/>
+        
+        <!-- One-to-one used to support eventual one-to-many, GB -->
+        <one-to-one name="recommendedDietaryAllowance" property-ref="monographUse"/>
+    	
+    	<!-- DependantObject 
+    	<set name="organismParts" sort="natural" table="monograph_use_orgparts">
+    	      <key column="monouse_id" />
+    	      <many-to-many column="orgpart_id" class="OrganismPart" />
+    	</set>
+    	-->
+    	<set name="monographSourceOrganismParts" sort="natural" 
+			table="monouse_monosrcorgparts">
+		    <cache usage="read-write"/>
+    	    <key column="monouse_id" />
+    	    <many-to-many column="monosrc_orgpart_id" class="MonographSourceOrganismPart" />
+    	</set>
+		<set name="dosageFormGroups" sort="natural" 
+			table="monouse_dosageformgroups">
+			<cache usage="read-write"/>
+			<key column="monouse_id" />
+    	    <many-to-many column="monouse_dosageformgroup_id" class="DosageFormGroup" />
+    	</set>    	
+    	
+		<many-to-one name="monographSourceIngredient" column="mono_source_ingred_id"/>
+		<many-to-one name="monographDoseCombination" column="monodosecomb_id"/>     
+		<many-to-one name="monographPreparation" column="monoprep_id"/>
+        <many-to-one name="subPopulation" column="subpop_id"/>
+        <set name="otherSources" sort="natural" table="monograph_use_gentexts">
+		    <cache usage="read-write"/>
+     	    <key column="monouse_id" />
+    	    <many-to-many column="gentext_id" class="GenericText" />
+    	</set>        
+        <property name="otherDependencyE" type="string" column="other_dependency_eng"/>
+        <property name="otherDependencyF" type="string" column="other_dependency_fr"/>        
+        <set name="citations" sort="natural" table="monograph_use_citations">
+		    <cache usage="read-write"/>
+            <key column="monouse_id" />
+            <many-to-many column="citation_id" class="Citation"/>
+        </set>   
+
+		<!-- PersistentObject -->
+       	<property name="creationDate" type="date" column="monouse_creation_date" not-null="true"  />
+        <property name="lastUpdateDate" type="date" column="monouse_lastupdate_date" not-null="true" />
+        <many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true" />
+        
+		<!-- Joins must go at the end 
+		orig mapping back to parent
+		<join table="monograph_uses_dist_monographs" inverse="true" optional="true">
+			<key column="monouse_id"/>
+			<many-to-one name="distinctMonograph" column="mono_id"/>
+		</join>
+		-->
+		
+	</class>
+</hibernate-mapping>

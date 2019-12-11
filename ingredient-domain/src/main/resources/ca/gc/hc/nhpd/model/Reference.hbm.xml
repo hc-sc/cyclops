@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="Reference" table="refs">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="ref_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">refs_seq</param>
+	        </generator>
+		</id>
+		
+		<property name="code" type="string" length="20" column="ref_code" not-null="true"/>
+		<property name="commentE" type="string" length="1000" column="ref_comment_eng"/>
+		<property name="commentF" type="string" length="1000" column="ref_comment_fr"/>
+		<property name="nameE" type="string" length="500" column="ref_name_eng" not-null="true"/>
+		<property name="nameF" type="string" length="500" column="ref_name_fr" not-null="true"/>
+		<many-to-one name="citation" column="citation_id" unique="true" not-null="true"/>
+		             
+		<property name="creationDate" type="date" column="ref_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="ref_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>             
+
+	</class>
+</hibernate-mapping>

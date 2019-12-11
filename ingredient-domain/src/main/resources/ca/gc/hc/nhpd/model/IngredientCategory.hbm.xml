@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="IngredientCategory" table="ingredient_categories">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="ingredcat_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">ingredient_categories_seq</param>
+	        </generator>
+		</id>
+		<property name="code" type="string" length="20" column="ingredcat_code" not-null="true"/>
+		<property name="nameE" type="string" length="100" column="ingredcat_name_eng" not-null="true"/>
+		<property name="nameF" type="string" length="100" column="ingredcat_name_fr" not-null="true"/>
+		<many-to-one name="specialization" 	column="ingredspec_id" 	not-null="true"/>
+		
+		<property name="creationDate" type="date" column="ingredcat_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="ingredcat_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>	
+			
+	</class>
+</hibernate-mapping>

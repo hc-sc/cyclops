@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="Organism" table="organisms" lazy="false">
+		<id name="id" type="java.lang.Long" column="organism_id">
+		    <!-- <generator class="assigned"/>  -->
+	 		<generator class="sequence">
+	        	<param name="sequence">organisms_seq</param>
+	        </generator>
+		</id>
+		
+		<property name="name" type="string" length="100" column="organism_name" not-null="true"/>
+		<many-to-one name="reference" column="ref_id" not-null="true"/>
+		<many-to-one name="type" column="orgtype_id" not-null="true"/>
+		<many-to-one name="species" column="species_id" not-null="false"/>
+		<many-to-one name="subTaxa" column="subtaxa_id" not-null="false"/>
+		<set name="qualifiedSynonyms" sort="natural" table="organism_qualifiedsynonyms" 
+		     lazy="false" cascade="all">
+			<key column="organism_id"/>
+			<many-to-many class="QualifiedSynonym" column="qualsyno_id" unique="true" />
+		</set>
+		<set name="countriesOfOrigin" sort="natural" table="organism_countries">
+			<key column="organism_id"/>
+			<many-to-many column="country_id" unique="true" class="Country"/>
+		</set>
+		<set name="geographicAreas" sort="natural" table="organism_geographic_areas">
+			<key column="organism_id"/>
+			<many-to-many column="geogarea_id" unique="true" class="GeographicArea"/>
+		</set>
+		<set name="taxa" sort="natural" inverse="true" cascade="all">
+			<key column="organism_id" not-null="true" on-delete="cascade"/>
+			<one-to-many class="Taxon"/>
+		</set>
+		<set name="organismParts" sort="natural" inverse="true" cascade="all">
+			<key column="organism_id" not-null="true" on-delete="cascade"/>
+			<one-to-many class="OrganismPart"/>
+		</set>
+
+		<property name="commentE" type="string" length="1000" column="organism_comment_eng"/>
+		<property name="commentF" type="string" length="1000" column="organism_comment_fr"/>
+		<property name="descriptionE" type="string" length="1000" column="organism_desc_eng"/>
+		<property name="descriptionF" type="string" length="1000" column="organism_desc_fr"/>
+		
+		<property name="creationDate" type="date" column="organism_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="organism_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+	</class>
+    <!--
+    private Species species;
+    private SubSpecies subSpecies;
+    -->
+</hibernate-mapping>

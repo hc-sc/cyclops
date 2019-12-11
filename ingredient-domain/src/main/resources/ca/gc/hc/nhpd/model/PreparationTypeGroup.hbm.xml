@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="PreparationTypeGroup" table="preparation_type_groups">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="preptypegrp_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">preparation_type_groups_seq</param>
+	        </generator>
+		</id>
+
+		<set name="preparationTypes" sort="natural" table="preptype_preptypegroups">
+            <cache usage="read-write"/>
+			<key column="preptypegrp_id"/>
+			<many-to-many column="preptype_id"
+				class="PreparationType"/>
+		</set>
+		
+		<property name="code" type="string" length="20" column="preptypegrp_code" not-null="true"/>
+		<property name="nameE" type="string" length="100" column="preptypegrp_name_eng" not-null="true"/>
+		<property name="nameF" type="string" length="100" column="preptypegrp_name_fr" not-null="true"/>
+
+		<property name="creationDate" type="date" column="preptypegrp_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="preptypegrp_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<!-- Note that lazy must be turned off for the subclassing to create proper class signatures -->
+	<class name="Restriction" table="restrictions" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="restrict_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">restrictions_seq</param>
+	        </generator>
+		</id>
+		<discriminator column="restrict_class_name" type="string"/>
+        <property name="lowerLimit" type="java.lang.Double" column="restrict_lower_limit"/>
+        <property name="upperLimit" type="java.lang.Double" column="restrict_upper_limit"/>
+        <property name="detailE" type="string" length="2000" column="restrict_detail_eng"/>
+        <property name="detailF" type="string" length="2000" column="restrict_detail_fr"/>
+        <many-to-one name="reference" column="ref_id" not-null="true"/>
+        <many-to-one name="routeOfAdministration" column="adminrt_id" not-null="false"/>
+        <many-to-one name="type" column="resttype_id" not-null="false"/>
+        <many-to-one name="units" column="units_id" not-null="false"/>
+        <set name="citations" sort="natural" table="restriction_citations">
+            <cache usage="read-write"/>
+            <key column="restrict_id"/>
+            <many-to-many column="citation_id" unique="true" class="Citation"/>
+        </set>  
+		
+		<property name="creationDate" type="date" column="restrict_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="restrict_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+		<subclass name="BasicRestriction" discriminator-value="BasicRestriction"/>
+
+		<subclass name="MedicinalRestriction" discriminator-value="MedicinalRestriction">
+			<property name="failureMessageE" type="string" length="1000" column="restrict_failure_message_eng"/>
+			<property name="failureMessageF" type="string" length="1000" column="restrict_failure_message_fr"/>
+            <many-to-one name="role" column="ingredrole_id" not-null="false"/>
+		</subclass>
+
+		<subclass name="NonMedicinalRestriction" discriminator-value="NonMedicinalRestriction">
+			<property name="safetyConcernAsString" type="string" length="1" column="restrict_safety_concern"/>
+			<set name="allowedPurposes" sort="natural" table="restriction_purposes">
+                <cache usage="read-write"/>
+				<key column="restrict_id"/>
+				<many-to-many column="purpose_id" unique="true" class="NonMedicinalPurpose"/>
+			</set>
+            <set name="productTypes" sort="natural" table="restriction_product_types">
+                <cache usage="read-write"/>
+                <key column="restrict_id"/>
+                <many-to-many column="prodtype_id" unique="false" class="ProductType"/>
+            </set>
+            <many-to-one name="role" column="ingredrole_id" not-null="false"/>
+		</subclass>
+	</class>
+</hibernate-mapping>

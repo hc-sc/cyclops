@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographDuration" table="monograph_durations" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monodur_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">MONOGRAPH_DURATIONS_SEQ</param>
+	        </generator>
+		</id>
+	
+		<!-- Basic Attributes -->			
+		<property name="code" type="string" length="20" column="code" not-null="true"/>
+		<property name="durationStatementE" type="string" column="monodur_statement_eng"/>
+        <property name="durationStatementF" type="string" column="monodur_statement_fr"/>        
+    	<property name="maximumDuration" type="integer" column="monodur_maximum_duration"/>
+        <property name="minimumDuration" type="integer" column="monodur_minimum_duration"/>
+        <many-to-one name="units" column="units_id" not-null="false"/>
+
+	   	<!-- DependantObject -->
+	   	<set name="monographUses" sort="natural" table="monograph_dur_mono_uses">
+              <cache usage="read-write"/>
+	   	      <key column="monodur_id" />
+    	      <many-to-many column="monouse_id" class="MonographUse" />
+    	</set>
+    	<!-- 
+    	<set name="organismParts" sort="natural" table="monograph_duration_orgparts">
+    	      <key column="monodur_id" />
+    	      <many-to-many column="orgpart_id" class="OrganismPart" />
+    	</set>
+    	-->
+		<set name="monographSourceOrganismParts" sort="natural" 
+			table="monoduration_monosrcorgparts">
+			  <cache usage="read-write"/>
+			  <key column="monodur_id" />
+    	      <many-to-many column="monosrc_orgpart_id" class="MonographSourceOrganismPart" />
+    	</set>
+		
+		<many-to-one name="monographSourceIngredient" column="mono_source_ingred_id"/>
+		<many-to-one name="monographDoseCombination" column="monodosecomb_id"/>     
+		<many-to-one name="monographPreparation" column="monoprep_id"/>
+        <many-to-one name="subPopulation" column="subpop_id"/>  
+        <set name="otherSources" sort="natural" table="monograph_duration_gentexts">
+              <cache usage="read-write"/>
+              <key column="monodur_id" />
+    	      <many-to-many column="gentext_id" class="GenericText" />
+    	</set>
+        <property name="otherDependencyE" type="string" column="other_dependency_eng"/>
+        <property name="otherDependencyF" type="string" column="other_dependency_fr"/>        
+		
+        <set name="citations" sort="natural" table="monograph_duration_citations">
+              <cache usage="read-write"/>
+              <key column="monodur_id" />
+              <many-to-many column="citation_id" class="Citation"/>
+        </set>   
+
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="monodur_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="monodur_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographRiskStatement" table="monograph_risk_stmts">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monoriskstmt_id">
+       		<generator class="sequence">
+                <param name="sequence">monograph_risk_stmts_seq</param>
+       		</generator>
+    	</id>  
+    	
+    	<property name="code" type="string" length="20" column="code" not-null="true"/>
+    	<many-to-one name="riskStatement" column="synonym_id"/> 
+        <set name="sourceIngredients" table="monograph_risk_src_ingreds">
+            <cache usage="read-write"/>
+			<key column="monoriskstmt_id"/>
+            <many-to-many column="ingred_id" class="Ingredient"/>
+		</set>
+		
+		<!-- original mapping back to parent 
+       	<set name="sharedMonographs" inverse="true" sort="natural" table="monograph_risk_shrd_monographs">
+			<key column="monoriskstmt_id"/>
+			<many-to-many column="mono_id" class="Monograph"/>
+		</set>
+		-->
+		<set name="monographs" inverse="true" sort="natural" table="monograph_risk_monographs">
+		    <cache usage="read-write"/>
+			<key column="monoriskstmt_id"/>
+			<many-to-many column="mono_id" class="Monograph"/>
+		</set>
+		
+       	<!-- DependantObject -->
+       	<set name="monographUses" sort="natural" table="monograph_rskstmt_mono_uses">
+		    <cache usage="read-write"/>
+    	    <key column="monoriskstmt_id" />
+    	    <many-to-many column="monouse_id" class="MonographUse" />
+    	</set>
+    	<!-- 
+    	<set name="organismParts" sort="natural" table="monograph_riskstmt_orgparts">
+    	      <key column="monoriskstmt_id" />
+    	      <many-to-many column="orgpart_id" class="OrganismPart" />
+    	</set>
+    	-->
+    	<set name="monographSourceOrganismParts" sort="natural" 
+			table="monorisk_monosrcorgparts">
+		    <cache usage="read-write"/>
+    	    <key column="monoriskstmt_id" />
+    	    <many-to-many column="monosrc_orgpart_id" class="MonographSourceOrganismPart" />
+    	</set>
+    	
+		<many-to-one name="monographSourceIngredient" column="mono_source_ingred_id"/>
+		<many-to-one name="monographDoseCombination" column="monodosecomb_id"/>     
+		<many-to-one name="monographPreparation" column="monoprep_id"/>
+        <many-to-one name="subPopulation" column="subpop_id"/>  
+        <set name="otherSources" sort="natural" table="monograph_riskstmt_gentexts">
+  		    <cache usage="read-write"/>
+    	    <key column="monoriskstmt_id" />
+    	    <many-to-many column="gentext_id" class="GenericText" />
+    	</set>        
+        <property name="otherDependencyE" type="string" column="other_dependency_eng"/>
+        <property name="otherDependencyF" type="string" column="other_dependency_fr"/>        
+        
+        <set name="citations" sort="natural" table="monograph_riskstmt_citations">
+  		    <cache usage="read-write"/>
+            <key column="monoriskstmt_id" />
+            <many-to-many column="citation_id" class="Citation"/>
+        </set>   
+
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="monoriskstmt_creation_date" not-null="true"  />
+        <property name="lastUpdateDate" type="date" column="monoriskstmt_lastupdate_date" not-null="true" />
+        <many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true" />
+
+		<!-- Joins must go at the end -->
+		<!-- original mapping back to parent 
+		<join table="monograph_risk_dist_monographs" inverse="true" optional="true">
+			<key column="monoriskstmt_id"/>
+			<many-to-one name="distinctMonograph" column="mono_id"/>
+		</join>
+		-->
+	</class>
+</hibernate-mapping>

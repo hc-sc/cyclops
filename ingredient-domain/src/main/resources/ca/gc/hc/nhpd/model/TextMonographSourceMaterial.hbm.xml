@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="TextMonographSourceMaterial" table="text_mono_srcmaterials" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="text_mono_srcmaterial_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">text_mono_srcmaterials_seq</param>
+	        </generator>
+		</id>
+		
+		<property name="sourceMaterialNameE" type="string" column="source_material_name_eng"/>
+		<property name="sourceMaterialNameF" type="string" column="source_material_name_fr"/>
+		
+		<many-to-one name="qualifiedAssertion"
+                     column="qualified_assertion_id" not-null="false"/>
+		
+		<!-- 
+		<set name="citations" sort="natural" table="txtmonosrcmat_citations">
+          <key column="text_mono_srcmaterial_id"/>
+          <many-to-many column="citation_id" unique="true" class="Citation"/>
+        </set>     
+		-->
+		
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="txtmonosrc_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="txtmonosrc_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+	</class>
+</hibernate-mapping>

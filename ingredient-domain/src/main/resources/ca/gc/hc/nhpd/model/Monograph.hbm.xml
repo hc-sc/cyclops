@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="Monograph" table="monographs" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="mono_id">
+       		<generator class="assigned"/>
+    	</id>
+    	<discriminator column="monospec_class_name" type="string"/>
+    	<property name="code" type="string" length="20" column="code" not-null="true"/>
+		<property name="nameE" type="string" column="mono_name_eng"/>
+		<property name="nameF" type="string" column="mono_name_fr"/>
+		<property name="urlE" type="string" column="mono_url_eng"/>
+		<property name="urlF" type="string" column="mono_url_fr"/>
+		
+		<set name="monographTypes" sort="natural" table="monograph_monograph_types">
+            <cache usage="read-write"/>
+		    <key column="mono_id"/>
+            <many-to-many column="monotype_id" unique="true" class="MonographType"/>
+        </set>  
+        
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="mono_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="mono_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+    	
+    	<subclass name="GeneratedMonograph" discriminator-value="GeneratedMonograph">
+			<property name="appendixE" type="text" length="100000" column="mono_appendix_eng"/>
+			<property name="appendixF" type="text" length="100000" column="mono_appendix_fr"/>
+
+	    	<many-to-one name="pdfAttachmentEnglish" class="Attachment" 
+    	 	             column="attachment_eng_id" unique="true" />
+		    <many-to-one name="pdfAttachmentFrench" class="Attachment" 
+		                 column="attachment_fr_id" unique="true" />
+		
+        	<many-to-one name="monographRouteOfAdministration"
+            	         column="monoadminrt_id" not-null="false"/>
+        
+        	<set name="monographCitationJoins"
+            	 inverse="true"
+             	cascade="all, delete-orphan">
+             	<cache usage="read-write"/>
+             	<key column="mono_id"/>
+            	<one-to-many class="MonographCitationJoin"/>
+        	</set>
+         
+        	<set name="doseNotes" sort="natural" table="monograph_dose_note_gentexts">
+      	        <cache usage="read-write"/>
+				<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+			</set>
+
+	        <set name="generalNotes" sort="natural" table="monograph_gen_note_gentexts">
+	            <cache usage="read-write"/>
+	        	<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+			</set>
+
+    	    <set name="nmiNotes" sort="natural" table="monograph_nmi_note_gentexts">
+    	        <cache usage="read-write"/>
+    	    	<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+			</set>
+    	    
+        	<set name="riskNotes" sort="natural" table="monograph_risk_note_gentexts">
+        	    <cache usage="read-write"/>
+        		<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+	        </set>
+
+    	    <set name="specificationInfo" sort="natural" table="monograph_spec_info_gentexts">
+    	        <cache usage="read-write"/>
+    	    	<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+    	    </set>
+        
+        	<set name="storageConditions" sort="natural" table="monograph_stor_cond_gentexts">
+        	    <cache usage="read-write"/>
+        		<key column="mono_id"/>
+				<many-to-many column="gentext_id" class="GenericText"/>
+    	    </set>  
+
+        	<property name="publishedDate" type="date" column="mono_publish_date"/>
+	   		<many-to-one name="monographGroup" column="monogroup_id" not-null="false"/>  
+        
+    	    <set name="subPopulations" table="monograph_sub_populations">
+    	        <cache usage="read-write"/>
+    	        <key column="mono_id"/>
+		        <many-to-many column="subpop_id" class="SubPopulation"/>
+        	</set>  
+		
+	 		<set name="monographUses" sort="natural" table="monograph_uses_monographs" lazy="false">
+	 		    <cache usage="read-write"/>
+	 		    <key column="mono_id"/>
+          		<many-to-many column="monouse_id" class="MonographUse"/>
+	        </set>  
+       
+    	    <set name="monographDurations" sort="natural" table="monograph_dur_monographs">
+	 		    <cache usage="read-write"/>
+        	    <key column="mono_id"/>
+	            <many-to-many column="monodur_id" class="MonographDuration"/>
+      	    </set>
+        
+        	<set name="monographRiskStatements" sort="natural" table="monograph_risk_monographs">
+	 		    <cache usage="read-write"/>
+          	    <key column="mono_id"/>
+          		<many-to-many column="monoriskstmt_id" class="MonographRiskStatement"/>
+        	</set>
+          
+        	<set name="monographPhases" sort="natural" table="monograph_phase_monographs">
+	 		    <cache usage="read-write"/>
+          		<key column="mono_id"/>
+          		<many-to-many column="monophase_id" class="MonographPhase"/>
+        	</set>    
+        
+        	<set name="monographEntries" inverse="true" lazy="false">
+	 		    <cache usage="read-write"/>
+          		<key column="mono_id"/>
+          		<one-to-many class="MonographEntry"/>
+	        </set>  
+    	</subclass>
+
+    	<subclass name="ExternalMonograph" discriminator-value="ExternalMonograph">
+			<property name="webPageContentE" type="string" column="mono_web_page_content_eng"/>
+			<property name="webPageContentF" type="string" column="mono_web_page_content_fr"/>
+    	</subclass>
+    	
+
+	</class>
+</hibernate-mapping>

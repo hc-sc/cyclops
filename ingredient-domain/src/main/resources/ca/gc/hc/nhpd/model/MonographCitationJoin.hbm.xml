@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographCitationJoin" 
+	       table="monograph_citation_joins" 
+	       mutable="false"
+           lazy="false">
+
+        <cache usage="read-write"/>
+		<composite-id name="id" class="MonographCitationJoin$Id">
+       		<key-property name="mono_id"
+       					  access="field"
+       					  column="mono_id"/>
+       		<key-property name="citation_id"
+       					  access="field"
+       					  column="citation_id"/>
+    		<key-property name="relationship"
+    					  access="field"
+    					  column="monocita_relationship"/>
+    	</composite-id>
+    	
+    	<many-to-one name="monograph"
+    				 column="mono_id"
+    				 not-null="true"
+    				 insert="false"
+    				 update="false"/>
+
+    	<many-to-one name="citation"
+    				 column="citation_id"
+    				 not-null="true"
+    				 insert="false"
+    				 update="false"/>
+    	
+		<property name="relationship" 
+		          type="long" 
+		          not-null="true"
+		          column="monocita_relationship"
+		          insert="false"
+		          update="false"/>
+
+		<!-- PersistentObject -->
+        <!--<property name="creationDate" type="date" column="monocita_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="monocita_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>-->
+	</class>
+</hibernate-mapping>

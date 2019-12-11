@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <class name="IchClass" table="ich_classes">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long" column="ichclass_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">ich_classes_seq</param>
+	        </generator>
+    </id>
+    <property name="code" type="string" length="20" column="ichclass_code" not-null="true"/>
+    <property name="descriptionE" type="string" length="1000" column="ichclass_desc_eng"/>
+    <property name="descriptionF" type="string" length="1000" column="ichclass_desc_fr"/>
+    <property name="impurityResidualLimit" type="java.lang.Double" column="ichclass_residual_limit"/>
+    <property name="nameE" type="string" length="100" column="ichclass_name_eng" not-null="true"/>
+    <property name="nameF" type="string" length="100" column="ichclass_name_fr" not-null="true"/>
+    <many-to-one name="impurityResidualUnits" column="units_id" not-null="false"/>
+    <set name="allowableTestMethods" sort="natural" table="ich_class_test_methods">
+        <cache usage="read-write"/>    
+        <key column="ichclass_id" not-null="true"/>
+        <many-to-many column="testmethod_id" class="TestMethod"/>
+    </set>
+    <property name="creationDate" type="date" column="ichclass_creation_date"/>
+    <property name="lastUpdateDate" type="date" column="ichclass_lastupdate_date"/>
+    <many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+  </class>
+</hibernate-mapping>

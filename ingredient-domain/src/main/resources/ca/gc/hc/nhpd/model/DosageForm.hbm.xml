@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+  "-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <class name="DosageForm" table="dosage_forms">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long" column="dosefrm_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">dosage_forms_seq</param>
+	        </generator>
+    </id>
+    <property name="allowIngredientUnitsAsString" type="string" length="10" column="dosefrm_allow_ingredient_units"/>
+    <property name="code" type="string" length="20" column="dosefrm_code" not-null="true"/>
+    <property name="nameE" type="string" length="100" column="dosefrm_name_eng" not-null="true"/>
+    <property name="nameF" type="string" length="100" column="dosefrm_name_fr" not-null="true"/>
+    <property name="descriptionE" type="string" length="1000" column="dosefrm_desc_eng"/>
+    <property name="descriptionF" type="string" length="1000" column="dosefrm_desc_fr"/>
+    <property name="assessmentRequiredString" type="string" length="1" column="dosefrm_assessment_required"/>
+    <set name="groups" inverse="true" table="dosageform_dosageformgroups">
+        <cache usage="read-write"/>    
+        <key column="dosefrm_id"/>
+        <many-to-many column="dosefrmgrp_id" class="DosageFormGroup"/>
+    </set>
+    <set name="acceptableRoutesOfAdmin" inverse="true" sort="natural" table="dosage_form_admin_routes">
+      <cache usage="read-write"/>
+      <key column="dosefrm_id" not-null="true"/>
+      <many-to-many column="adminrt_id" class="RouteOfAdministration"/>
+    </set>
+    <set name="dosageUnits" sort="natural" table="dosageform_dosageunits">
+      <key column="dosefrm_id"/>
+      <many-to-many column="dosageunit_id" unique="true" class="DosageUnit"/>
+    </set> 
+    <set name="synonyms" sort="natural" table="dosageform_synonyms" lazy="false">
+      <cache usage="read-write"/>
+      <key column="dosefrm_id"/>
+      <many-to-many column="synonym_id" unique="false" class="Synonym"/>
+    </set>
+    <map name="categoryTestSpecMap" table="dosage_form_test_specs">
+      <cache usage="read-write"/>
+      <key column="dosefrm_id" not-null="true"/>
+      <map-key-many-to-many column="testcat_id" class="TestCategory"/>
+      <many-to-many column="testspec_id" class="TestSpecification"/>
+    </map>
+	<property name="creationDate" type="date" column="dosefrm_creation_date"/>
+	<property name="lastUpdateDate" type="date" column="dosefrm_lastupdate_date"/>
+	<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+  </class>
+</hibernate-mapping>

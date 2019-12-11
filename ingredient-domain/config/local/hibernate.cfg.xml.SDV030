@@ -1,0 +1,187 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+        <property name="show_sql">false</property>
+        <property name="use_sql_comments">false</property>
+        <property name="query.substitutions">true 1, false 0, yes 'Y', no 'N'</property>
+    
+        <!-- ***************************************************** -->
+        <!-- Oracle/Tomcat 5.5 Configuration - DEVELOPMENT         -->
+        <!-- ***************************************************** --> 
+        <!--  DEPLOYMENT Aug 20/07 -->
+        <property name="dialect">org.hibernate.dialect.Oracle9iDialect</property>
+        
+        <!-- ********************************************* -->
+        <!-- C3P0 connection pool                          -->
+        <!-- ********************************************* --> 
+        <!--  See C3P0 doc dir in download
+        C3P0 Native property            Hibernate equivalent                
+        ++++++++++++++++++++            ++++++++++++++++++++
+        c3p0.acquireIncrement           hibernate.c3p0.acquire_increment     
+        c3p0.idleConnectionTestPeriod   hibernate.c3p0.idle_test_period     
+        c3p0.initialPoolSize            not available; uses minimum size     
+        c3p0.maxIdleTime                hibernate.c3p0.timeout 
+        c3p0.maxPoolSize                hibernate.c3p0.max_size 
+        c3p0.maxStatements              hibernate.c3p0.max_statements 
+        c3p0.minPoolSize                hibernate.c3p0.min_size 
+        -->        
+        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <!-- stuff that used to be in context.xml, which defined datasource -->
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        
+        <!-- NHPDWEB1_OWNER/tqanhwbo13d1@SDV030 -->
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@orasade03.hc-sc.gc.ca:1521:SDV030</property>
+        <property name="hibernate.connection.username">NHPDWEB_OWNER</property>
+        <property name="hibernate.connection.password">tqanhwbo13d</property>
+        
+        <!-- Local: Dwight's cube
+        <property name="connection.username">ingredients1_user</property>
+        <property name="connection.password">password</property>
+        <property name="connection.url">jdbc:oracle:thin:@10.159.176.119:1521:orcl</property>
+        -->
+        
+        <!-- Local: MR 2nd PC  
+        <property name="connection.username">NHPD_MRLOCAL</property>
+        <property name="connection.password">dagger</property>
+        <property name="connection.url">jdbc:oracle:thin:@10.159.177.108:1521:xe</property>
+      	-->
+        
+        <!-- NHPDWEB4_OWNER 
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@OIMT_ORACLE_DEV:1526:dev1</property>
+        <property name="hibernate.connection.username">NHPDWEB4_OWNER</property>
+        <property name="hibernate.connection.password">NHPD_WEB4</property>
+        -->
+        
+        <!-- SDV030 NHPDWEB_OWNER
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@orasade03.hc-sc.gc.ca:1521:SDV030</property>
+        <property name="hibernate.connection.username">NHPDWEB2_OWNER</property>
+        <property name="hibernate.connection.password">tqanhwbo13d2</property>
+        -->
+        
+        <!-- C3P0 configuration parms -->
+        <property name="hibernate.c3p0.min_size">5</property> 
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.acquire_increment">3</property> 
+        <property name="hibernate.c3p0.idle_test_period">900</property>  
+        <property name="hibernate.c3p0.timeout">18050</property>     <!-- 5 hours -->
+        <property name="hibernate.c3p0.max_statements">0</property>  
+        
+        <!-- JDBC Settings -->
+        <property name="jdbc.use_streams_for_binary">true</property>
+        <property name="max_fetch_depth">1</property>
+        <property name="jdbc.batch_size">0</property>
+        <property name="jdbc.batch_versioned_data">true</property>
+    
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+        
+        <property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+                
+		
+	    <!-- FormBuilder mapping files -->
+		<mapping resource="ca/gc/hc/nhpd/model/ApplicationText.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Attachment.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/AuditEntry.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ChemicalClass.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ChemicalSubclass.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Citation.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/CitationSpecialization.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/CodedRisk.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ContextSensitiveCitations.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Country.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/DietaryAllowance.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/DosageForm.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/DosageFormGroup.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/DosageRange.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/EvidenceType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Family.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Genus.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/GeographicArea.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/HomeopathicDilution.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/HomeopathicFormula.hbm.xml"/> 
+        <mapping resource="ca/gc/hc/nhpd/model/HomeopathicGenericText.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/HomeopathicMethodOfPreparation.hbm.xml"/> 
+        <mapping resource="ca/gc/hc/nhpd/model/HomeopathicPreparationType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IchClass.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ImpuritySubstance.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Indication.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IndicationType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Ingredient.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IngredientCategory.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IngredientRole.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IngredientRoleSpecialization.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IngredientSource.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/IngredientSpecialization.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Journal.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ManufacturingProcess.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MeddraPreferredTerm.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MicrobiologicalImpurity.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Monograph.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographCitationJoin.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographDirectionForUse.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographDose.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographDoseCombination.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographDuration.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographEntry.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographGroup.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/MonographPhase.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographPreparation.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographRiskStatement.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographRouteOfAdministration.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographSourceIngredient.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographSourceOrganismPart.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/MonographSubIngredientCombination.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographSubIngredientDose.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/MonographSubIngredientDoseCombination.hbm.xml"/>      
+        <mapping resource="ca/gc/hc/nhpd/model/MonographType.hbm.xml"/>  
+        <mapping resource="ca/gc/hc/nhpd/model/MonographUse.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/NhpClassification.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/NonMedicinalPurpose.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Organism.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/OrganismGroup.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/OrganismPart.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/OrganismPartType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/OrganismType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/OrganismTypeGroup.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Permission.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/PreparationType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/PreparationTypeGroup.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/ProductType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/QualifiedSynonym.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/QuantityToleranceModel.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Rationale.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/RecommendedDietaryAllowance.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Reference.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/RegistryEntry.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Restriction.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/RestrictionType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Risk.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/RiskType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/RouteOfAdministration.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Solvent.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Species.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/SubIngredient.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/SubPopulation.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/SubTaxa.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Synonym.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Taxon.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/TestCategory.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/TestMethod.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/TestMethodType.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/TestMethodSubtype.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/TextMonographSourceMaterial.hbm.xml"/>        
+        <mapping resource="ca/gc/hc/nhpd/model/TestSpecification.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Text.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/TraditionalParadigm.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/Units.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/UnitsType.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/UserAccount.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/UserRole.hbm.xml"/>
+        <mapping resource="ca/gc/hc/nhpd/model/UseType.hbm.xml"/>
+
+
+	</session-factory>
+</hibernate-configuration>

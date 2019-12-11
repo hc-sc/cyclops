@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <class name="UserAccount" table="user_accounts">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long" column="useracc_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">user_accounts_seq</param>
+	        </generator>
+    </id>
+    
+    <property name="accountName" type="string" length="40" column="useracc_account_name" not-null="true"/>
+    <property name="firstName" type="string" length="60" column="useracc_first_name" not-null="true"/>
+    <property name="lastName" type="string" length="60" column="useracc_last_name" not-null="true"/>
+    <property name="password" type="string" length="250" column="password" not-null="true"/>
+    <property name="emailAddress" type="string" length="100" column="useracc_email" not-null="true"/>
+
+	<set name="roles" sort="natural" table="useraccount_userroles" lazy="false">	
+        <cache usage="read-write"/>
+        <key column="useracc_id"/>
+        <many-to-many column="userrole_id" class="UserRole"/>
+    </set>
+
+    <property name="creationDate" type="date" column="useracc_creation_date"/>
+	<property name="lastUpdateDate" type="date" column="useracc_lastupdate_date"/>
+	<many-to-one name="lastUpdateAccount" column="useracc_useracc_id" not-null="true"/>
+	
+	
+  </class>
+</hibernate-mapping>

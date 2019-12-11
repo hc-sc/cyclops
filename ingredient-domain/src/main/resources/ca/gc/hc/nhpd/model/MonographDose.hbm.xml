@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographDose" table="monograph_doses" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monodose_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">MONOGRAPH_DOSES_SEQ</param>
+	        </generator>
+		</id>
+	
+		<!-- Basic Attributes -->		
+		<property name="code" type="string" length="20" column="code" not-null="true"/>
+		<property name="additionalDetailsE" type="string" column="monodose_add_details_eng"/>
+        <property name="additionalDetailsF" type="string" column="monodose_add_details_fr"/>        
+    	<property name="doseMaximum" type="java.lang.Float" column="monodose_maximum_dose"/>
+        <property name="doseMinimum" type="java.lang.Float" column="monodose_minimum_dose"/>
+        <many-to-one name="doseUnits" column="units_id" not-null="false"/>
+    	<property name="frequencyMaximum" type="integer" column="monodose_maximum_frequency"/>
+        <property name="frequencyMinimum" type="integer" column="monodose_minimum_frequency"/>
+        <many-to-one name="frequencyUnits" column="monodose_frequency_units_id" not-null="false"/>
+        <many-to-one name="restrictionType" column="resttype_id" not-null="false"/>
+
+        <set name="monographSubIngredientDoseCombinations" sort="natural" 
+        	table="monodose_monosubidosecombs">
+		    <cache usage="read-write"/>
+            <key column="monodose_id"/>
+            <many-to-many column="mono_subing_dosecomb_id" 
+          				  class="MonographSubIngredientDoseCombination"/>
+        </set>  
+        
+        <property name="visibleString" type="string" column="monodose_visible"/>        
+
+		<set name="monographDirectionsForUse" sort="natural" table="monograph_dose_mono_dfus">
+		    <cache usage="read-write"/>
+			<key column="monodose_id"/>
+			<many-to-many column="monodfu_id" class="MonographDirectionForUse"/>
+		</set>
+		
+	   	<!-- DependantObject -->
+        <set name="citations" sort="natural" table="monograph_dose_citations" lazy="false">
+              <cache usage="read-write"/>
+              <key column="monodose_id" />
+              <many-to-many column="citation_id" class="Citation"/>
+        </set> 
+	   	<set name="monographUses" sort="natural" table="monograph_dose_mono_uses" lazy="false">
+	   	      <cache usage="read-write"/>
+	   	      <key column="monodose_id" />
+    	      <many-to-many column="monouse_id" class="MonographUse" />
+    	</set>
+    	
+    	<!-- 
+    	<set name="organismParts" sort="natural" table="monograph_dose_orgparts" lazy="false">
+    	      <key column="monodose_id" />
+    	      <many-to-many column="orgpart_id" class="OrganismPart" />
+    	</set>
+    	-->
+    	<set name="monographSourceOrganismParts" sort="natural" 
+			table="monodose_monosrcorgparts">
+			  <cache usage="read-write"/>
+			  <key column="monodose_id" />
+    	      <many-to-many column="monosrc_orgpart_id" class="MonographSourceOrganismPart" />
+    	</set>
+    	
+		<many-to-one name="monographSourceIngredient" column="mono_source_ingred_id"/>
+		<many-to-one name="monographPreparation" column="monoprep_id"/>
+        <many-to-one name="subPopulation" column="subpop_id"/>  
+        <set name="otherSources" sort="natural" table="monograph_dose_gentexts" lazy="false">
+              <cache usage="read-write"/>
+              <key column="monodose_id" />
+    	      <many-to-many column="gentext_id" class="GenericText" />
+    	</set>
+        <property name="otherDependencyE" type="string" column="other_dependency_eng"/>
+        <property name="otherDependencyF" type="string" column="other_dependency_fr"/>        
+
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="monodose_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="monodose_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+
+		<!-- Joins must go at the end 
+		This attempt failed because it caused circular reference within the Hibernate.
+		We had to achive this code programatically. 
+		<join table="mono_dosecomb_mono_doses" inverse="true" optional="true">
+			<key column="monodose_id" />
+			<many-to-one name="monographDoseCombination" column="monodosecomb_id"
+						 not-null="true"/>
+		</join>
+		-->
+
+	</class>
+</hibernate-mapping>

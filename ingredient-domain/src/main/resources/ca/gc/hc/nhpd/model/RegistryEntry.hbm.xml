@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="RegistryEntry" table="registry_entries">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="regentry_id">
+			<generator class="increment"/>
+		</id>
+		<property name="entryNumber" type="string" length="30" column="regentry_code" not-null="true"/>
+		<property name="commentE" type="string" length="1000" column="regentry_comment_eng"/>
+		<property name="commentF" type="string" length="1000" column="regentry_comment_fr"/>
+		<property name="nameE" type="string" length="100" column="regentry_name_eng"/>
+		<property name="nameF" type="string" length="100" column="regentry_name_fr"/>
+		<many-to-one name="reference" column="ref_id" not-null="true"/>
+		
+		<property name="creationDate" type="date" column="regentry_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="regentry_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+	</class>
+</hibernate-mapping>
+

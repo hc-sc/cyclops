@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+	  
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <class name="Indication" table="indications">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long" column="indication_id">
+       <generator class="sequence">
+                <param name="sequence">indication_seq</param>
+        </generator>
+    </id>
+    
+     <set name="routesOfAdministration" sort="natural" table="indication_admin_routes">
+        <cache usage="read-write"/>      
+		<key column="indication_id"/>
+		<many-to-many column="adminrt_id" class="RouteOfAdministration"/>
+	</set>
+	
+    <set name="uses" sort="natural">
+        <cache usage="read-write"/>
+		<key column="indication_id"/>
+		<one-to-many class="NonTraditionalMedicinalUse"/>
+	</set>
+	
+    	<many-to-one name="preferredTerm" column="meddrapref_id" />
+		<many-to-one name="type" column="indictype_id" />		
+		<property name="creationDate" type="date" column="indication_creation_date" not-null="true"/>
+		<property name="lastUpdateDate" type="date" column="indication_lastupdate_date" not-null="true"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+  </class>
+</hibernate-mapping>

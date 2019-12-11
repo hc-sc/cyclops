@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="IngredientSource" table="ingredient_sources">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="ingredsrc_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">ingredient_sources_seq</param>
+	        </generator>
+		</id>
+		<property name="nameE" type="string" length="100" column="ingredsrc_name_eng"/>
+		<property name="nameF" type="string" length="100" column="ingredsrc_name_fr"/>
+	</class>
+</hibernate-mapping>

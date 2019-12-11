@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="Attachment" table="attachments">
+		<id name="id" type="java.lang.Long" column="attachment_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">attachments_seq</param>
+	        </generator>
+		</id>
+    	<property name="cacheable" type="yes_no" column="attachment_cacheable_flag" not-null="true"/>
+		<property name="contentBlob" type="blob" column="attachment_content" not-null="true"/>
+		<property name="descriptionE" type="string" length="1000" column="attachment_desc_eng"/>
+		<property name="descriptionF" type="string" length="1000" column="attachment_desc_fr"/>
+		<property name="height" type="java.lang.Integer" column="attachment_height"/>
+		<property name="mimeType" type="string" length="100" column="attachment_mimetype" not-null="true"/>
+		<property name="nameE" type="string" length="100" column="attachment_name_eng"/>
+		<property name="nameF" type="string" length="100" column="attachment_name_fr"/>
+		<property name="size" type="java.lang.Integer" column="attachment_size"/>
+		<property name="width" type="java.lang.Integer" column="attachment_width"/>
+		
+		<property name="creationDate" type="date" column="attachment_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="attachment_lastupdate_date"/>
+		<!-- <many-to-one name="lastUpdateAccount" column="useracc_id"/> -->
+	</class>
+</hibernate-mapping>
+

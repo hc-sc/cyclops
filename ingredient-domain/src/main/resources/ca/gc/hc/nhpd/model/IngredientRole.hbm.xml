@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<!-- Note that lazy must be turned off for the subclassing to create proper class signatures -->
+	<class name="IngredientRole" table="ingredient_roles" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="ingredrole_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">ingredient_roles_seq</param>
+	        </generator>
+		</id>
+		<discriminator column="rolespec_class_name" type="string"/>
+        <many-to-one name="ingredient" column="ingred_id" not-null="true"/>
+		<set name="restrictions" sort="natural" inverse="false" cascade="all">
+            <cache usage="read-write"/>		
+			<key column="ingredrole_id" not-null="false"/>
+			<one-to-many class="Restriction"/>
+		</set>
+        <property name="creationDate" type="date" column="ingredrole_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="ingredrole_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+		<subclass name="ComponentRole" discriminator-value="ComponentRole">
+		</subclass>
+
+		<subclass name="HomeopathicRole" discriminator-value="HomeopathicRole">
+            <set name="homeopathicFormulas" sort="natural" cascade="all" inverse="true">
+                <cache usage="read-write"/>          
+                <key column="ingredrole_id" not-null="false"/>
+                <one-to-many class="HomeopathicFormula"/>
+            </set>
+		</subclass>
+
+		<subclass name="MedicinalRole" discriminator-value="MedicinalRole">
+            <set name="manufacturingProcesses" sort="natural">
+                <cache usage="read-write"/>
+                <key column="ingredrole_id" not-null="false"/>
+                <one-to-many class="ManufacturingProcess"/>
+            </set>
+            <many-to-one name="rationale" column="rationale_id" unique="true" cascade="all"/>
+            
+		<!-- <join table="ingredientrole_rationales" optional="true">
+				<key column="ingredrole_id" unique="true"/>					
+			</join>-->
+		</subclass>
+		<subclass name="NonMedicinalRole" discriminator-value="NonMedicinalRole">
+			<set name="purposes" sort="natural" table="ingredient_role_purposes">
+                <cache usage="read-write"/>
+				<key column="ingredrole_id"/>
+				<many-to-many column="purpose_id" unique="true" class="NonMedicinalPurpose"/>
+			</set>			
+		</subclass>
+		<subclass name="NonNHPRole" discriminator-value="NonNHPRole">
+			<many-to-one name="rationale" column="rationale_id" not-null="false" unique="true"/>
+			<many-to-one name="restriction" column="restrict_id" unique="true"/>
+		</subclass>
+	</class>
+</hibernate-mapping>

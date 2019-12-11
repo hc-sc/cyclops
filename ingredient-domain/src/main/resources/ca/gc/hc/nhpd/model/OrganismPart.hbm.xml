@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="OrganismPart" table="organism_parts" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="orgpart_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">organism_parts_seq</param>
+	        </generator>
+		</id>
+		<set name="ingredients" sort="natural" table="ingredient_orgparts">
+            <cache usage="read-write"/>
+			<key column="orgpart_id"/>
+			<many-to-many column="ingred_id"
+				class="DefinedOrganismSubstance"/>
+		</set>
+		<many-to-one name="organism" column="organism_id" not-null="false"/>
+		<many-to-one name="type" column="orgparttype_id" not-null="true"/>
+		<many-to-one name="organismGroup" column="org_grp_id" not-null="false"/>
+        <set name="subIngredients" sort="natural" table="organism_part_subingredients" cascade="all">
+            <cache usage="read-write"/>
+            <key column="orgpart_id"/>
+            <many-to-many column="subingred_id" unique="false" class="SubIngredient"/>
+        </set>
+        <property name="creationDate" type="date" column="orgpart_creation_date" not-null="true"  />
+        <property name="lastUpdateDate" type="date" column="orgpart_lastupdate_date" not-null="true" />
+        <many-to-one name="lastUpdateAccount" column="useracc_id"  not-null="true"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="IngredientSpecialization" table="ingredient_specials">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="ingredspec_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">ingredient_specials_seq</param>
+	        </generator>
+		</id>
+		
+		<property name="className" type="string" length="100" column="ingredspec_class_name" not-null="true"/>
+		<property name="nameE" type="string" length="100" column="ingredspec_name_eng" not-null="true"/>
+		<property name="nameF" type="string" length="100" column="ingredspec_name_fr" not-null="true"/>
+		<set name="categories" sort="natural" inverse="true" order-by="ingredcat_name_eng asc">
+            <cache usage="read-write"/>		
+			<key column="ingredspec_id" not-null="true"/>
+			<one-to-many class="IngredientCategory"/>
+		</set>
+		<!--
+		<property name="creationDate" type="date" column="ingredspec_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="ingredspec_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>	
+		-->
+	</class>
+</hibernate-mapping>

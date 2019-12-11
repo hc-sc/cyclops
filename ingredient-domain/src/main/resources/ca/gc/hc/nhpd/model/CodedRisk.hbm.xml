@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+		<class name="CodedRisk" table="coded_risks">
+        <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="codedrisk_id">
+			<generator class="increment"/>
+		</id>
+		<set name="riskStatements" sort="natural" table="coded_risks_synonyms" >
+            <cache usage="read-write"/>		
+			<key column="codedrisk_id"/>
+			<many-to-many column="synonym_id" class="Synonym" /> 
+	   </set>
+		<many-to-one name="preferredTerm" column="meddrapref_id" />
+		<many-to-one name="type" column="risktype_id" />
+		
+		<property name="creationDate" type="date" column="codedrisk_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="codedrisk_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>	
+	</class>
+	<filter-def name="engFilter">
+    <filter-param name="filter_param" type="string"/>
+</filter-def>
+	
+</hibernate-mapping>
+

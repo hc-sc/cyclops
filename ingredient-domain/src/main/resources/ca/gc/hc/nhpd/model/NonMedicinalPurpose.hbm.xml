@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="NonMedicinalPurpose" table="purposes">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="purpose_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">purposes_seq</param>
+	        </generator>
+		</id>
+		<property name="code" type="string" length="20" column="purpose_code" not-null="true"/>
+		<property name="commentE" type="string" length="1000" column="purpose_comment_eng"/>
+		<property name="commentF" type="string" length="1000" column="purpose_comment_fr"/>
+		<property name="nameE" type="string" length="100" column="purpose_name_eng" not-null="true"/>
+		<property name="nameF" type="string" length="100" column="purpose_name_fr" not-null="true"/>
+        <property name="upperLimitPercentage" type="java.lang.Integer" column="purpose_upper_limit"/>
+        <property name="artificialOrNaturalAsString" type="java.lang.String" column="purpose_artificialOrNatural"/>
+		<set name="routesOfAdministration" sort="natural" table="purpose_adminrts">
+            <cache usage="read-write"/>
+			<key column="purpose_id"/>
+			<many-to-many column="adminrt_id" 
+				class="RouteOfAdministration"/>
+		</set>
+		<set name="synonyms" sort="natural" table="purpose_synonyms" lazy="false">
+            <cache usage="read-write"/>
+ 			<key column="purpose_id"/>
+			<many-to-many column="synonym_id" unique="true" class="Synonym"/>
+		</set>
+        <map name="categoryTestSpecMap" table="purpose_test_specs">
+            <cache usage="read-write"/>
+            <key column="purpose_id"/>
+            <map-key-many-to-many column="testcat_id" class="TestCategory"/>
+            <many-to-many column="testspec_id" class="TestSpecification"/>
+        </map>
+		
+		<property name="creationDate" type="date" column="purpose_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="purpose_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+	</class>
+</hibernate-mapping>

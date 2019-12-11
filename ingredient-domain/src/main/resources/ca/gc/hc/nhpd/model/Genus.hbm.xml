@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="Genus" table="genera">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="genus_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">genera_seq</param>
+	        </generator>
+		</id>
+		<property name="name" type="string" length="100" column="genus_name" not-null="true"/>
+		<many-to-one name="family"
+			column="family_id"
+			not-null="true"/>
+		<set name="species" sort="natural" inverse="true" cascade="all">
+            <cache usage="read-write"/>
+			<key column="genus_id" on-delete="cascade"/>
+			<one-to-many class="Species"/>
+		</set>
+		
+		<property name="creationDate" type="date" column="genus_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="genus_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+		
+	</class>
+</hibernate-mapping>
+

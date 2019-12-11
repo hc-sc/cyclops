@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <!-- Note that lazy must be turned off for the subclassing to create proper class signatures -->
+  <class name="OrganismGroup" table="organism_groups" lazy="false">
+    <cache usage="read-write"/>
+    <id name="id" type="java.lang.Long" column="org_grp_id">
+        <generator class="sequence">
+            <param name="sequence">organism_groups_seq</param>
+            </generator>
+    </id>  
+    <discriminator column="org_grp_class_name" type="string"/>
+       
+    <set name="includedOrganisms" sort="natural" table="in_org_grp_organism" lazy="false">
+        <cache usage="read-write"/>
+        <key column="org_grp_id"/>
+        <many-to-many column="organism_id" class="Organism" />
+    </set>
+    <property name="creationDate" type="date" column="org_grp_creation_date"/>
+    <property name="lastUpdateDate" type="date" column="org_grp_lastupdate_date"/>
+    <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+         
+    <subclass name="SimpleOrganismGroup" discriminator-value="SimpleOrganismGroup"/>
+     
+    <subclass name="NamedOrganismGroup" discriminator-value="NamedOrganismGroup">
+        <property name="nameE" type="string" column="org_grp_name_eng"/>
+        <property name="nameF" type="string" column="org_grp_name_fr"/>
+        <many-to-one name="reference" column="ref_id"/>
+        <set name="excludedFamilies" sort="natural" table="ex_org_grp_families">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="family_id" class="Family" />
+        </set>
+        <set name="excludedGenera" sort="natural" table="ex_org_grp_genera">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="genus_id" class="Genus" />
+        </set>
+        <set name="excludedOrganisms" sort="natural" table="ex_org_grp_organism">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="organism_id" class="Organism" />
+        </set>
+        <set name="excludedSpecies" sort="natural" table="ex_org_grp_species">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="species_id" class="Species" />
+        </set>
+        <set name="excludedSubTaxa" sort="natural" table="ex_org_grp_subtaxa">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="subtaxa_id" class="SubTaxa" />
+        </set>
+        <set name="includedFamilies" sort="natural" table="in_org_grp_families">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="family_id" class="Family" />
+        </set>
+        <set name="includedGenera" sort="natural" table="in_org_grp_genera">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="genus_id" class="Genus" />
+        </set>
+        <set name="includedSpecies" sort="natural" table="in_org_grp_species">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="species_id" class="Species" />
+        </set>
+        <set name="includedSubTaxa" sort="natural" table="in_org_grp_subtaxa">
+            <cache usage="read-write"/>
+            <key column="org_grp_id"/>
+            <many-to-many column="subtaxa_id" class="SubTaxa" />
+        </set>
+    </subclass>
+  </class>
+</hibernate-mapping>

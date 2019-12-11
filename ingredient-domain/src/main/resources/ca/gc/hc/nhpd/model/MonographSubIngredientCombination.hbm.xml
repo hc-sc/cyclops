@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographSubIngredientCombination" table="monograph_subingcombs" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monosubingcomb_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">MONOGRAPH_SUBINGCOMBS_SEQ</param>
+	        </generator>
+		</id>
+	
+		<!-- Basic Attributes -->
+		<property name="code" type="string" length="20" column="code" not-null="true"/>					
+    	<property name="maximumRatio" type="java.lang.Float" column="monosubingcomb_maximum_ratio"/>
+        <property name="minimumRatio" type="java.lang.Float" column="monosubingcomb_minimum_ratio"/>
+        <many-to-one name="primarySubIngredient" column="prim_subingred_id" not-null="true"/>
+        <many-to-one name="secondarySubIngredient" column="sec_subingred_id" not-null="false"/>
+        
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="monosubingcomb_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="monosubingcomb_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+	</class>
+</hibernate-mapping>

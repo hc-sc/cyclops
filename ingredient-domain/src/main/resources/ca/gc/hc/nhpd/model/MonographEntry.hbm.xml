@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+	<class name="MonographEntry" table="monograph_entries" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="monoent_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">monograph_entries_seq</param>
+	        </generator>
+		</id>
+
+        <discriminator column="monoentry_class_name" type="string"/>
+        <many-to-one name="monograph" column="mono_id" not-null="false"/>
+		<many-to-one name="ingredient" column="ingred_id"  not-null="true" lazy="false"/>
+		<property name="sourceNotesE" type="string" column="source_notes_eng"/>
+        <property name="sourceNotesF" type="string" column="source_notes_fr"/>
+		
+        <set name="properNames" sort="natural" table="monograph_entry_qualsyno_pns" lazy="false">
+            <cache usage="read-write"/>
+            <key column="monoent_id" />
+            <many-to-many column="qualsyno_id" unique="true" class="QualifiedSynonym"/>
+        </set>
+        <set name="commonNames" sort="natural" table="monograph_entry_qualsyno_cns" lazy="false">
+            <cache usage="read-write"/>
+            <key column="monoent_id"/>
+            <many-to-many column="qualsyno_id" unique="true" class="QualifiedSynonym"/>
+        </set>                 
+		
+		<set name="monographDoseCombinations" 
+             table="mono_entry_mono_dosecombs"
+             sort="natural" lazy="false">
+            <cache usage="read-write"/>
+            <key column="monoent_id"/>
+            <many-to-many column="monodosecomb_id" class="MonographDoseCombination"/>
+        </set>      
+		
+		<!-- 
+        <set name="sourceOrganismParts" table="monograph_entries_orgparts" lazy="false">
+          <key column="monoent_id"/>
+              <many-to-many column="orgpart_id" class="OrganismPart"/>
+        </set>   
+		-->
+		<set name="monographSourceOrganismParts" table="mono_entry_monosrcorgparts" lazy="false">
+		  <cache usage="read-write"/>
+		  <key column="monoent_id"/>
+          <many-to-many column="mono_source_orgpart_id" class="MonographSourceOrganismPart"/>
+        </set>
+        <!-- moved up from ChemicalMonographEntry Dec 16,2009  MR -->   
+		<set name="otherMonographSources" table="mono_entries_txt_monosources">
+                    <key column="monoent_id"/>
+                    <many-to-many column="txtmonosource_id" class="TextMonographSourceMaterial"/>
+        </set>
+		
+		<!-- PersistentObject -->
+        <property name="creationDate" type="date" column="monoent_creation_date"/>
+        <property name="lastUpdateDate" type="date" column="monoent_lastupdate_date"/>
+        <many-to-one name="lastUpdateAccount" column="useracc_id"/>
+        
+		<subclass name="OrganismMonographEntry" discriminator-value="OrganismMonographEntry">
+              <set name="preparationTypes" table="monograph_entries_preptypes">
+                    <cache usage="read-write"/>
+                    <key column="monoent_id" />
+                    <many-to-many column="preptype_id" class="PreparationType"/>
+              </set>   
+              <set name="preparationTypeGroups" sort="natural" table="monograph_entries_preptypegrps">
+                    <cache usage="read-write"/>
+                    <key column="monoent_id" />
+                    <many-to-many column="preptypegrp_id" class="PreparationTypeGroup"/>
+              </set>   
+		</subclass>
+		
+		<subclass name="ChemicalMonographEntry" discriminator-value="ChemicalMonographEntry">
+              <set name="monographSourceIngredients" table="mono_entry_monosrcingreds">
+                    <cache usage="read-write"/>
+                    <key column="monoent_id" />
+                    <many-to-many column="mono_source_ingred_id" class="MonographSourceIngredient"/>
+              </set>
+        </subclass>
+
+		<subclass name="GenericMonographEntry" discriminator-value="GenericMonographEntry">
+        </subclass>
+                
+	</class>
+</hibernate-mapping>

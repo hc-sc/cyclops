@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.6//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ca.gc.hc.nhpd.model">
+  <!-- Note that lazy must be turned off for the subclassing to create proper class signatures -->
+	<class name="Synonym" table="synonyms" lazy="false">
+	    <cache usage="read-write"/>
+		<id name="id" type="java.lang.Long" column="synonym_id">
+	 		<generator class="sequence">
+	        	<param name="sequence">synonyms_seq</param>
+	        </generator>
+		</id>
+		<discriminator column="synonym_class_name" type="string"/>
+		<property name="nameE" type="string" length="700" column="synonym_name_eng" not-null="false"/>
+		<property name="nameF" type="string" length="700" column="synonym_name_fr" not-null="false"/>
+		<property name="commentE" type="string" length="1000" column="synonym_comment_eng"/>
+		<property name="commentF" type="string" length="1000" column="synonym_comment_fr"/>
+		<property name="descriptionE" type="string" length="1000" column="synonym_desc_eng"/>
+		<property name="descriptionF" type="string" length="1000" column="synonym_desc_fr"/>
+
+		<set name="citationsE" sort="natural" table="synonym_texts_eng_citations">
+              <cache usage="read-write"/>
+              <key column="synonym_id" />
+              <many-to-many column="citation_id" class="Citation"/>
+        </set> 
+        
+        <set name="citationsF" sort="natural" table="synonym_texts_fr_citations">
+              <cache usage="read-write"/>
+              <key column="synonym_id" />
+              <many-to-many column="citation_id" class="Citation"/>
+        </set> 
+
+		<property name="creationDate" type="date" column="synonym_creation_date"/>
+		<property name="lastUpdateDate" type="date" column="synonym_lastupdate_date"/>
+		<many-to-one name="lastUpdateAccount" column="useracc_id" not-null="true"/>
+
+		<subclass name="TraditionalMedicinalUse" discriminator-value="Traditional Medicinal Use">
+               <many-to-one name="paradigm" column="tradparadigm_id"/>
+        </subclass>
+		
+		<subclass name="NonTraditionalMedicinalUse" discriminator-value="Non-Traditional Medicinal Use">
+               <many-to-one name="indication" column="indication_id"/>
+        </subclass>
+		
+		<subclass name="RiskStatement" discriminator-value="Risk Statement">
+               <many-to-one name="codedRisk" column="codedrisk_id"/>
+        </subclass>
+	</class>
+</hibernate-mapping>
