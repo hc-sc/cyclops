@@ -4,13 +4,13 @@ The objective of this repository is to:
 - share code between STC and HC.
 - keep track of the progress of the project.
 
-# Description 
+## Description 
 
 - The project is proposing to create a new process enabled by a digital-tool to virtualize optically represented text on the label, query the data via existing databases, identify and highlight instances of non-compliances, and visually depict the issue by overlaying the information back on to the camera/device feed. This will allow inspectors to review the labels on-site, without the need to collect samples and invest more time into the inspection. 
 
 - As a small scale proof of concept, a solution can be developed by using the minimal viable product model for Natural Health Products and targeted for Inspectors in the Health Product Compliance and the Border Centres for testing. 
 
-# Stages
+## Stages
 
 **Stream 1:** Project Cyclops was able to identify the key elements that would need to be built in order for the solution to deliver the provided result. 
 
@@ -18,7 +18,7 @@ The objective of this repository is to:
 
 *Note: A continuous integration and continuous deployment model will be implemented during the pipeline development allowing the modifications to continuously push towards the production environment for it to be used by the inspectors as features are added.
 
-# Timelines
+## Timelines
 
 ########################## No. 1 ################################## 
 
@@ -65,10 +65,19 @@ The objective of this repository is to:
 
 
 
-# Expected outcome
+## Expected outcome
 
 - Increased efficiency and accuracy of product inspections. 
 
 - Time savings for inspectors
 
 - Standardization of product inspections 
+
+## NHPID
+
+- There are three sub-projects in this repository which are the application layer for the data
+  - [nnhpd-monograph-web-service-client](./nnhpd-monograph-web-service-client)
+  - [nnhpd-monograph-web-service](./nnhpd-monograph-web-service)
+    - Depends on nnhpd-monograph-web-service-client
+    - Depends [ojdbc6](https://nhpid-dv-wb-01.canadacentral.cloudapp.azure.com/artifactory/hc-sc/ojdbc6/ojdbc6/6.0.0/) library, which is hosted on internal artifactory or as an [un-manged package](https://nhpid-dv-wb-01.canadacentral.cloudapp.azure.com/artifactory/hc-sc/ojdbc6/ojdbc6/6.0.0/)
+  - [ingredient-domain](./ingredient-domain)
