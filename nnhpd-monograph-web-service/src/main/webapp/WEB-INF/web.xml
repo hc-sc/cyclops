@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<!--  
+	You can obtain a copy of the license at
+ https://jwsdp.dev.java.net/CDDLv1.0.html
+ See the License for the specific language governing
+ permissions and limitations under the License.
+ 
+ When distributing Covered Code, include this CDDL
+ HEADER in each file and include the License file at
+ https://jwsdp.dev.java.net/CDDLv1.0.html  If applicable,
+ add the following below this CDDL HEADER, with the
+ fields enclosed by brackets "[]" replaced with your
+ own identifying information: Portions Copyright [yyyy]
+ [name of copyright owner]
+-->
+
+  <display-name>CombinedWebService</display-name>
+  <description>CombinedWebService</description>
+
+  <listener>
+    <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+  </listener>
+  
+  <listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+  </context-param>
+   
+  <servlet>
+    <servlet-name>CombinedWebService</servlet-name>
+    <servlet-class>ca.gc.hc.nhpd.webservice.servlet.WebServiceInitServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CombinedWebService</servlet-name>
+    <url-pattern>/CombinedWebService</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>IngredientService</servlet-name>
+    <servlet-class>ca.gc.hc.nhpd.webservice.servlet.WebServiceInitServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>IngredientService</servlet-name>
+    <url-pattern>/IngredientService</url-pattern>
+  </servlet-mapping>
+  
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+</web-app>

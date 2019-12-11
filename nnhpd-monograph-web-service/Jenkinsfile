@@ -1,0 +1,34 @@
+node {
+    // Get Artifactory server instance, defined in the Artifactory Plugin administration page.
+    def server = Artifactory.server "ArtifactoryLocal"
+    // Create an Artifactory Gradle instance.
+    def rtGradle = Artifactory.newGradleBuild()
+    def buildInfo
+
+   stage 'Clone sources' 
+      checkout scm
+    
+   
+
+    stage('Artifactory configuration') {
+        // Tool name from Jenkins configuration
+        rtGradle.tool = "Gradle 4.6"
+        // Set Artifactory repositories for dependencies resolution and artifacts deployment.
+        rtGradle.deployer repo:'hc-sc', server: server
+        rtGradle.resolver repo:'hc-sc', server: server
+    }
+
+   stage('Gradle build') {
+        buildInfo = rtGradle.run rootDir: "", buildFile: 'build.gradle', tasks: 'clean artifactoryPublish'
+    }
+
+    stage('Publish build info') {
+        server.publishBuildInfo buildInfo
+    }
+    
+    stage('Deploy') {
+    	echo "Testing gradle cargo deployment instruction."
+        buildInfo = rtGradle.run rootDir: "", buildFile: 'build.gradle', tasks: 'war cargoRedeployRemote'
+    }
+        
+}
