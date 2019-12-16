@@ -1,0 +1,8 @@
+--post.patch
+--author:  Dehong Pan
+--date:    09/17/2019
+--note:	   it is good practise to recompile everything after each patch applied.
+--ticket:  WPLA-305
+
+EXEC DBMS_UTILITY.COMPILE_SCHEMA ('NHPDWEB_DEV');
+--

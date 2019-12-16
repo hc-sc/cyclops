@@ -1,0 +1,582 @@
+-----------------------------------
+--patch #21
+-- date: 2019/10/29
+-- fixes: DB-221, WPLA-365
+----------------------------------
+spool patch_21.log
+prompt Patch 21
+prompt ---------
+prompt v_non_compendial_sources
+create or replace force view
+v_non_compendial_sources
+as
+select i.ingred_authorized_name_eng ingred_nhpid_name_eng, 
+       i.ingred_authorized_name_fr ingred_nhpid_name_fr, 
+       si.ingred_authorized_name_eng source_nhpid_name_eng, 
+       si.ingred_authorized_name_fr source_nhpid_name_fr, 
+       'Source Ingredient' source_type, 
+       i.ingred_id ingredient_id, 
+       si.ingred_id source_id, 
+       si.ingredcat_id src_name_type_id, 
+       null organism_id, 
+       null organism_name, 
+       null organism_type_id, 
+       null organism_type_name_eng, 
+       null organism_type_name_fr,
+       null organism_group_id,
+       null organism_group_name_eng,
+       null organism_group_name_fr, 
+       p.prep_type_id preparation_id,
+       null source_material_part_id, 
+       null source_material_part_type_code, 
+       null source_material_part_name_eng, 
+       null source_material_part_name_fr, 
+       null source_material_strain, 
+       null orgparttype_id
+  from SUBINGREDIENTS s,
+       INGREDIENT_SUBINGREDIENTS ins,
+       INGREDIENTS si,
+       INGREDIENTS i,
+       x$ingredient_prep_code p
+ where 1=1
+   and s.subingred_id = ins.subingred_id
+   and ins.ingred_id = si.ingred_id
+   and s.ingred_id = i.ingred_id
+   and s.subingred_id not in (select subingred_id from ORGANISM_PART_SUBINGREDIENTS)
+   and si.ingred_id = p.ingred_id(+)
+ union
+select i.ingred_authorized_name_eng ingred_nhpid_name_eng, 
+       i.ingred_authorized_name_fr ingred_nhpid_name_fr, 
+       i.ingred_authorized_name_eng source_nhpid_name_eng, 
+       i.ingred_authorized_name_fr source_nhpid_name_fr, 
+       'Source Material' source_type, 
+       i.ingred_id ingredient_id, 
+       i.ingred_id source_id, 
+       i.ingredcat_id src_name_type_id, 
+       t.organism_id, 
+       t.organism_name, 
+       t.orgtype_id organism_type_id, 
+       t.orgtype_name_eng organism_type_name_eng, 
+       t.orgtype_name_fr organism_type_name_fr, 
+       t.org_group_id,
+       t.org_group_name_eng,
+       t.org_group_name_fr, 
+       p.prep_type_id preparation_id,
+       t.orgparttype_id source_material_part_id, 
+       t.orgparttype_code source_material_part_type_code, 
+       t.orgparttype_name_eng source_material_part_name_eng, 
+       t.orgparttype_name_fr source_material_part_name_fr, 
+       null source_material_strain, 
+       t.orgparttype_id
+  from v_ingredient_organism_parts t,
+       INGREDIENTS i,
+       x$ingredient_prep_code p
+ where t.ingred_id = i.ingred_id
+   and t.ingred_id = p.ingred_id(+)
+;
+
+prompt ---------
+prompt v_ingredient_organism_parts
+create or replace force view
+v_ingredient_organism_parts
+as
+-- with ingredient groups of organisms
+select o.organism_id, o.organism_name,
+       op.org_grp_id org_group_id, null org_group_name_eng, null org_group_name_fr,
+       ot.orgtype_id, ot.orgtype_name_eng, ot.orgtype_name_fr,
+       op.orgpart_id, op.orgparttype_id,
+       opt.orgparttype_code, opt.orgparttype_name_eng, opt.orgparttype_name_fr,
+       i.ingred_id
+  from INGREDIENTS i, 
+       IN_ORG_GRP_ORGANISM iog, 
+       ORGANISMS o,
+       ORGANISM_TYPES ot,
+       ORGANISM_PARTS op,
+       ORGANISM_PART_TYPES opt
+ where i.org_grp_id is not null
+   and i.org_grp_id = iog.org_grp_id
+   and iog.organism_id = o.organism_id
+   and o.orgtype_id = ot.orgtype_id
+   and o.organism_id = op.organism_id
+   and op.orgparttype_id = opt.orgparttype_id
+union all -- with sub-ingredient (sources?) organisms 
+select o.organism_id, o.organism_name,
+       op.org_grp_id org_group_id, null org_group_name_eng, null org_group_name_fr,
+       ot.orgtype_id, ot.orgtype_name_eng, ot.orgtype_name_fr,
+       op.orgpart_id, op.orgparttype_id,
+       opt.orgparttype_code, opt.orgparttype_name_eng, opt.orgparttype_name_fr,
+       su.ingred_id
+  from SUBINGREDIENTS su,
+       ORGANISM_PART_SUBINGREDIENTS ops,
+       ORGANISM_PARTS op,
+       ORGANISM_PART_TYPES opt,
+       ORGANISMS o,
+       ORGANISM_TYPES ot
+ where 1=1
+   and su.subingred_id = ops.subingred_id
+   and ops.orgpart_id = op.orgpart_id
+   and op.orgparttype_id = opt.orgparttype_id
+   and op.organism_id = o.organism_id
+   and o.orgtype_id = ot.orgtype_id
+ union all -- with sub-ingredient (sources?) groups of parts
+select null, null,
+       og.org_grp_id org_group_id, 
+       og.org_grp_name_eng org_group_name_eng, og.org_grp_name_fr org_group_name_fr,
+       null, null, null,
+       ps.orgpart_id, opt.orgparttype_id,
+       opt.orgparttype_code, opt.orgparttype_name_eng, opt.orgparttype_name_fr,
+       s.ingred_id
+  from SUBINGREDIENTS s, 
+       ORGANISM_PART_SUBINGREDIENTS ps,
+       ORGANISM_PARTS op, 
+       ORGANISM_GROUPS og,
+       ORGANISM_PART_TYPES opt
+ where 1=1
+   and s.subingred_id = ps.subingred_id
+   and ps.orgpart_id = op.orgpart_id
+   and op.org_grp_id = og.org_grp_id
+   and op.orgparttype_id = opt.orgparttype_id
+ union all -- with ingredient groups of parts
+select null, null,
+       op.org_grp_id org_group_id, 
+       og.org_grp_name_eng org_group_name_eng, og.org_grp_name_fr org_group_name_fr,
+       null, null, null,
+       op.orgpart_id, op.orgparttype_id,
+       opt.orgparttype_code, opt.orgparttype_name_eng, opt.orgparttype_name_fr,
+       i.ingred_id
+  from INGREDIENTS i, 
+       ORGANISM_PARTS op, 
+       ORGANISM_PART_TYPES opt,
+       ORGANISM_GROUPS og
+ where i.org_grp_id is not null
+   and i.org_grp_id = op.org_grp_id
+   and op.orgparttype_id = opt.orgparttype_id
+   and op.org_grp_id = og.org_grp_id
+;
+
+prompt ---------
+prompt v_source_organism_parts
+create or replace force view
+v_source_organism_parts
+as  -- sources of organism type i.e. "source material"
+select -- organisms with mono_code, ingred_id, source_ingred_id and organism_id
+       op.organism_name, op.orgtype_id, op.orgtype_name_eng, op.orgtype_name_fr,
+       op.organism_id source_org_id, op.orgpart_id source_org_part_id, op.orgparttype_id source_org_parttype_id,
+       op.org_group_id source_org_group_id, 
+       op.org_group_name_eng source_org_group_name_eng, 
+       op.org_group_name_fr source_org_group_name_fr, -- vp added groups
+       --op.ingred_id, x.ingred_id source_ingred_id, -- vp case ingred_id = 1548
+       mx.ingredient_id  ingred_id, mx.source_id source_ingred_id, -- vp case ingred_id = 1548
+       op.orgparttype_code source_org_parttype_code,
+       op.orgparttype_name_eng source_org_parttype_name_eng, op.orgparttype_name_fr source_org_parttype_name_fr,
+       x.product_mono_code, x.mono_code, mx.mono_code_nhpid mono_code_nhpid, mx.monograph_id mono_id,
+       x.source_material_strain
+  from x$organism_ingredient x,
+       x$mono_source_ingredient mx,
+       v_ingredient_organism_parts op
+ where 1=1
+   and nvl(x.product_mono_code,'x') = nvl(mx.product_mono_code,'x')
+   and x.mono_code = mx.mono_code
+   and op.ingred_id = mx.source_id --ingredient_id -- vp case for ingred_id = 1548
+   and op.organism_id = nvl(x.organism_id,op.organism_id) -- vp case for ingred_id = 1548
+   and op.orgparttype_id = x.orgparttype_id
+union --all
+select -- organisms with both ingred_id and organism_id, no mono_code or source_ingred_id
+       op.organism_name, op.orgtype_id, op.orgtype_name_eng, op.orgtype_name_fr,
+       op.organism_id source_org_id, op.orgpart_id source_org_part_id, op.orgparttype_id source_org_parttype_id,
+       op.org_group_id source_org_group_id, 
+       op.org_group_name_eng source_org_group_name_eng, 
+       op.org_group_name_fr source_org_group_name_fr, -- vp added groups
+       op.ingred_id, xs.source_ingred_id,
+       op.orgparttype_code source_org_parttype_code,
+       op.orgparttype_name_eng source_org_parttype_name_eng, op.orgparttype_name_fr source_org_parttype_name_fr,
+       null, null, null, null, null
+       --xs.product_mono_code, xs.single_mono_code, mx.mono_code, mx.mono_id
+  from v_ingredient_organism_parts op,
+       x$source_id_source_org_types xs
+ where 1=1
+   and op.orgtype_id = xs.orgtype_id
+   and op.organism_id = xs.source_org_id
+   and op.orgpart_id = xs.source_org_part_id
+   and op.orgparttype_id = xs.source_org_parttype_id
+   and op.ingred_id = xs.ingred_id
+union
+select -- organism types as a sources
+       null o_organism_name,
+       ot.orgtype_id,
+       nvl(x.source_material_org_type,ot.orgtype_name_eng) orgtype_name_eng, 
+       nvl(x.source_material_org_type,ot.orgtype_name_fr) orgtype_name_fr, 
+       null op_organism_id,-- source_org_id,
+       null op_orgpart_id,-- source_org_part_id,
+       opt.orgparttype_id source_org_parttype_id,
+       null source_org_group_id, 
+       null source_org_group_name_eng, 
+       null source_org_group_name_fr, -- vp added groups
+       null su_ingred_id, -- sub-ingredient ingred_id
+       x.source_id, --x.ingred_id source_ingred_id,
+       opt.orgparttype_code source_org_parttype_code,
+       opt.orgparttype_name_eng source_org_parttype_name_eng,
+       opt.orgparttype_name_fr source_org_parttype_name_fr,
+       x.product_mono_code, x.single_mono_code, --mx.mono_code, mx.mono_id,
+       x.mono_code, x.mono_id, null
+  from x$source_organism_types x,
+       ORGANISM_TYPES ot,
+       ORGANISM_PART_TYPES opt,
+       x$monograph_ingredients_xref mx
+ where 1=1
+   and x.orgtype_id = ot.orgtype_id(+)
+   and x.orgparttype_id = opt.orgparttype_id(+)
+   and nvl(x.product_mono_code,'x') = nvl(mx.product_mono_code(+),'x')
+   and x.single_mono_code = mx.mono_code(+)
+;
+
+prompt ---------
+prompt v_all_sources
+create or replace force view 
+v_all_sources
+as
+-- all sources from monographs
+select --unique
+       m.ingred_nhpid_name_eng,
+       m.ingred_nhpid_name_fr,
+       m.source_nhpid_name_eng,
+       m.source_nhpid_name_fr,
+       m.product_mono_code,
+       m.single_mono_code,
+       m.mono_code,
+       --m.source_type,
+       'Source '||nvl2(nvl(q.source_org_part_id, x.orgparttype_id),'Material','Ingredient') source_type,
+       m.mono_id,
+       m.ingredient_id,
+       m.source_id,
+       m.src_name_type_id,
+       x.organism_id,
+       q.organism_name,
+       q.orgtype_id organism_type_id,
+       q.orgtype_name_eng organism_type_name_eng,
+       q.orgtype_name_fr organism_type_name_fr,
+       q.source_org_group_id organism_group_id, 
+       q.source_org_group_name_eng organism_group_name_eng, 
+       q.source_org_group_name_fr organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       nvl(q.source_org_part_id, x.orgparttype_id) source_material_part_id,
+       q.source_org_parttype_code source_material_part_type_code,
+       q.source_org_parttype_name_eng source_material_part_name_eng,
+       q.source_org_parttype_name_fr source_material_part_name_fr,
+       x.source_material_strain,
+       x.orgparttype_id
+  from v_mono_source_ingredient m,
+       x$organism_ingredient x,
+       v_source_organism_parts Q, 
+       x$ingredient_prep_code p
+ where 1=1
+   and m.ingredient_id = x.ingred_id
+   and nvl(m.product_mono_code, 'x') = nvl(x.product_mono_code, 'x')
+   and m.single_mono_code = x.mono_code
+   and m.ingredient_id = q.ingred_id
+   and m.source_id =  q.source_ingred_id
+   and x.organism_id = q.source_org_id
+   and x.orgparttype_id = q.source_org_parttype_id
+--   and x.ingred_id = q.ingred_id
+   and m.source_id = p.ingred_id(+)
+ union
+select --unique
+       m.ingred_nhpid_name_eng,
+       m.ingred_nhpid_name_fr,
+       m.source_nhpid_name_eng,
+       m.source_nhpid_name_fr,
+       m.product_mono_code,
+       m.single_mono_code,
+       m.mono_code,
+       --m.source_type,
+       'Source '||nvl2(nvl(q.source_org_part_id, x.orgparttype_id),'Material','Ingredient') source_type,
+       m.mono_id,
+       m.ingredient_id,
+       m.source_id,
+       m.src_name_type_id,
+       x.organism_id,
+       q.organism_name,
+       q.orgtype_id organism_type_id,
+       q.orgtype_name_eng organism_type_name_eng,
+       q.orgtype_name_fr organism_type_name_fr,
+       q.source_org_group_id organism_group_id, 
+       q.source_org_group_name_eng organism_group_name_eng, 
+       q.source_org_group_name_fr organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       nvl(q.source_org_part_id, x.orgparttype_id) source_material_part_id,
+       q.source_org_parttype_code source_material_part_type_code,
+       q.source_org_parttype_name_eng source_material_part_name_eng,
+       q.source_org_parttype_name_fr source_material_part_name_fr,
+       x.source_material_strain,
+       x.orgparttype_id
+  from v_mono_source_ingredient m,
+       x$organism_ingredient x,
+       v_source_organism_parts Q, 
+       x$ingredient_prep_code p
+ where 1=1
+   and m.ingredient_id = x.ingred_id
+   and nvl(m.product_mono_code,'x') = nvl(x.product_mono_code,'x')
+   and m.single_mono_code = x.mono_code
+   and m.source_id = x.source_id
+   and x.organism_id is null
+   --
+   and x.ingred_id = q.ingred_id(+)
+   and x.source_id = q.source_ingred_id(+)
+   and nvl(x.product_mono_code,'x') = nvl(q.product_mono_code(+),'x')
+   and x.mono_code = q.mono_code(+)
+   and x.orgparttype_id= q.source_org_parttype_id(+)
+--   and q.orgtype_id is null
+   --
+   and m.source_id = p.ingred_id(+)
+ union --all
+select --unique
+       m.ingred_nhpid_name_eng,
+       m.ingred_nhpid_name_fr,
+       m.source_nhpid_name_eng,
+       m.source_nhpid_name_fr,
+       m.product_mono_code,
+       m.single_mono_code,
+       m.mono_code,
+       --m.source_type,
+       'Source '||nvl2(q.source_org_part_id,'Material','Ingredient') source_type,
+       m.mono_id,
+       m.ingredient_id,
+       m.source_id,
+       t.src_name_type_id,
+       q.source_org_id,
+       q.organism_name,
+       q.orgtype_id organism_type_id,
+       q.orgtype_name_eng organism_type_name_eng,
+       q.orgtype_name_fr organism_type_name_fr,
+       q.source_org_group_id organism_group_id, 
+       q.source_org_group_name_eng organism_group_name_eng, 
+       q.source_org_group_name_fr organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       q.source_org_part_id source_material_part_id,
+       q.source_org_parttype_code source_material_part_type_code,
+       q.source_org_parttype_name_eng source_material_part_name_eng,
+       q.source_org_parttype_name_fr source_material_part_name_fr,
+       null source_material_strain,
+       q.source_org_parttype_id orgparttype_id
+  from v_mono_source_ingredient t,
+       v_mono_source_ingredient m,
+       v_source_organism_parts Q, 
+       x$ingredient_prep_code p
+ where 1=1
+   and nvl(t.product_mono_code,'x') = nvl(m.product_mono_code,'x') -- vp case ingred_id = 1548
+   and t.single_mono_code = m.mono_code -- vp case ingred_id = 1548
+   and t.ingredient_id = m.ingredient_id
+   and t.source_id = m.source_id
+   --
+   and nvl(m.product_mono_code,'x') = nvl(q.product_mono_code,'x') -- vp case ingred_id = 1548
+   and m.single_mono_code = q.mono_code -- vp case ingred_id = 1548
+   and m.ingredient_id = q.ingred_id
+   and m.source_id = p.ingred_id(+)
+ union --all
+-- non monograph sources of type "source ingredient"
+select i.ingred_authorized_name_eng,
+       i.ingred_authorized_name_fr,
+       ing.ingred_authorized_name_eng,
+       ing.ingred_authorized_name_fr,
+       null product_mono_code,
+       null mono_code,
+       null mono_code_nhpid,
+       'Source Ingredient',
+       null mono_id,
+       subs.ingred_id,
+       ing.ingred_id,
+       ing.ingredcat_id,
+       null organism_id,
+       null organism_name,
+       null organism_type_id,
+       null organism_type_name_eng,
+       null organism_type_name_fr,
+       null organism_group_id, 
+       null organism_group_name_eng, 
+       null organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       null source_material_part_id,
+       null source_org_parttype_code,
+       null source_material_part_name_eng,
+       null source_material_part_name_fr,
+       null source_material_strain,
+       null orgparttype_id
+  from INGREDIENTS ing,
+       INGREDIENT_SUBINGREDIENTS ingsub,
+       SUBINGREDIENTS subs,
+       INGREDIENTS i,
+       x$ingredient_prep_code p
+ where ing.ingred_id = ingsub.ingred_id
+   and ingsub.subingred_id = subs.subingred_id
+   and ing.ingredspec_class_name = 'ChemicalSubstance'
+   and i.ingred_id = subs.ingred_id
+   and ing.ingred_id = p.ingred_id(+)
+union --all
+-- non ingredient organisms
+select --unique
+       n.ingred_authorized_name_eng nhpid_ingred_name_eng,
+       n.ingred_authorized_name_fr nhpid_ingred_name_fr,
+       null nhpid_source_name_eng,
+       null nhpid_source_name_fr,
+       q.product_mono_code,
+       q.mono_code,
+       q.mono_code_nhpid,
+       'Source Material' source_type,
+       q.mono_id,
+       nvl(q.ingred_id,mi.ingred_id) ingred_id,--null ingredient_id,
+       q.source_ingred_id source_id,
+       null src_ingred_cat_id,
+       q.source_org_id organism_id,
+       q.organism_name,
+       q.orgtype_id organism_type_id,
+       q.orgtype_name_eng organism_type_name_eng,
+       q.orgtype_name_fr organism_type_name_fr,
+       q.source_org_group_id organism_group_id, 
+       q.source_org_group_name_eng organism_group_name_eng, 
+       q.source_org_group_name_fr organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       --q.source_org_part_id source_material_part_id,
+       nvl(q.source_org_part_id,q.source_org_parttype_id) source_material_part_id, -- artificial ID substitution
+       q.source_org_parttype_code source_material_part_type_code,
+       q.source_org_parttype_name_eng source_material_part_name_eng,
+       q.source_org_parttype_name_fr source_material_part_name_fr,
+       null source_material_strain,
+       q.source_org_parttype_id orgparttype_id
+  from INGREDIENTS i,
+       v_source_organism_parts Q, 
+       x$non_ingred_orgnsm_prep_code p,
+       x$monograph_ingredients_xref mi,
+       INGREDIENTS n
+ where lower(trim(q.organism_name)) = lower(trim(i.ingred_authorized_name_eng(+)))
+   and i.ingred_id is null
+   and lower(trim(q.organism_name)) = lower(trim(p.organism_name(+)))
+   and nvl(q.product_mono_code,'x') = nvl(mi.product_mono_code(+),'x')
+   and q.mono_code = mi.mono_code(+)
+   and mi.ingred_id = n.ingred_id(+)
+union --all
+-- orphan source organism types
+select --unique
+       i.ingred_authorized_name_eng nhpid_ingred_name_eng,
+       i.ingred_authorized_name_fr nhpid_ingred_name_fr,
+       null nhpid_source_name_eng,
+       null nhpid_source_name_fr,
+       mx.product_mono_code,
+       mx.mono_code,
+       mx.mono_code_nhpid,
+       'Source Material' source_type,
+       mx.mono_id,
+       mx.ingred_id_nhpid ingredient_id,
+       null source_id,
+       null src_ingred_cat_id,
+       null,--q.source_org_id,
+       null,--q.organism_name,
+       mx.organism_type_id,
+       ot.orgtype_name_eng organism_type_name_eng,
+       ot.orgtype_name_fr organism_type_name_fr,
+       null organism_group_id, 
+       null organism_group_name_eng, 
+       null organism_group_name_fr, -- vp added groups
+       p.prep_type_id preparation_id,
+       mx.orgparttype_id source_material_part_id,
+       mx.orgparttype_code source_material_part_type_code,
+       mx.orgparttype_name_eng source_material_part_name_eng,
+       mx.orgparttype_name_fr source_material_part_name_fr,
+       null source_material_strain,
+       mx.orgparttype_id
+  from x$orphan_source_organism_types mx,
+       organism_types ot,
+       x$non_ingred_orgnsm_prep_code p,
+       INGREDIENTS i
+ where 1=1
+   and mx.organism_type_id = ot.orgtype_id
+   and mx.ingred_id_nhpid = i.ingred_id(+)
+   and mx.source_prep_code = p.source_prep_code(+)
+;
+
+prompt ---------
+prompt v_source_ingredient
+create or replace force view 
+v_source_ingredient
+as
+select m.ingred_nhpid_name_eng,
+       m.ingred_nhpid_name_fr,
+       m.source_nhpid_name_eng,
+       m.source_nhpid_name_fr,
+       m.product_mono_code,
+       m.single_mono_code,
+       m.mono_code,
+       m.mono_id,
+       m.ingredient_id,
+       m.source_id,
+       m.src_name_type_id,
+       m.preparation_id
+  from v_all_sources m
+ where m.source_material_part_id is null -- Ingredient
+;
+
+prompt ---------
+prompt v_source_material
+create or replace force view
+v_source_material
+as
+select m.ingred_nhpid_name_eng,
+       m.ingred_nhpid_name_fr,
+       m.source_nhpid_name_eng,
+       m.source_nhpid_name_fr,
+       m.product_mono_code,
+       m.single_mono_code,
+       m.mono_code,
+       m.mono_id,
+       m.ingredient_id,
+       m.source_id,
+       m.src_name_type_id,
+       m.organism_id,
+       m.organism_name,
+       m.organism_type_id,
+       m.organism_type_name_eng,
+       m.organism_type_name_fr,
+       m.organism_group_id, 
+       m.organism_group_name_eng, 
+       m.organism_group_name_fr, -- vp added groups
+       m.preparation_id,
+       m.source_material_part_id,
+       m.source_material_part_type_code,
+       m.source_material_part_name_eng,
+       m.source_material_part_name_fr,
+       m.source_material_strain,
+       m.orgparttype_id
+  from v_all_sources m
+ where m.source_material_part_id is not null -- Material
+;
+
+prompt ---------
+prompt synonyms and grants
+create or replace public synonym v_non_compendial_sources for nhpdweb_owner.v_non_compendial_sources;
+grant select on v_non_compendial_sources to nhpdweb_buffer;
+grant select on v_non_compendial_sources to nhpid_apex;
+grant select on v_non_compendial_sources to rl__nhpdweb_admin;
+grant select on v_non_compendial_sources to rl__nhpdweb_read;
+grant select on v_non_compendial_sources to r_nhpd_ing_read;
+grant select on v_non_compendial_sources to nhpdweb_user;
+
+prompt ---------
+prompt compile schema and show errors
+
+exec dbms_utility.compile_schema(user);
+
+select object_name, object_type from user_objects where status = 'INVALID';
+
+set linesize 1000 pagesize 9999 trimspool on
+col name for a30
+col line for 99999
+col message_number for 99999
+col text for a512
+select t.name,
+       t.line,
+       t.message_number,
+       t.text
+  from user_errors t
+;
+
+spool off
+

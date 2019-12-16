@@ -1,0 +1,172 @@
+-----------------------------------
+--patch #35
+-- date: 2019/11/19
+-- fixes: DB-229
+----------------------------------
+define pth=35
+spool patch_&pth..log
+prompt Patch &&pth
+set timing on
+
+prompt ---------
+prompt v_mono_subingreds
+create or replace force view
+v_mono_subingreds
+as 
+select 
+    t.mono_code,
+    t.ingred_id,
+    t.ingred_nhpid_name,
+    t.ingred_nhpid_name_fr,
+    t.sub_ingred_ingred_id subingredient_id,
+    t.sub_ingred_nhpid_name_eng,
+    t.sub_ingred_nhpid_name_fr,
+    t.mono_id
+from v_ingred_org_part_subingreds t
+where mono_code is not null
+union
+select 
+    x.mono_code,
+    x.ingred_id,
+    x.ingred_nhpid_name_eng ingred_nhpid_name,
+    x.ingred_nhpid_name_fr,
+    x.sub_ingred_id subingredient_id,
+    x.sub_ingred_nhpid_name_eng,
+    x.sub_ingred_nhpid_name_fr,
+    x.mono_id
+from v_chemical_ingred_subingreds x
+where mono_code is not null
+;
+
+prompt ---------
+prompt refresh prep data
+truncate table x$ingredient_prep_code;
+insert into x$ingredient_prep_code
+(ingred_id, nhpid_name, prep_group_code, prep_type_id, source_group_code, 
+product_mono_code, single_mono_code, mono_code, mono_id, source_prep_code, ingred_prep_code_id, useracc_id, creation_date)
+with q as (
+select --unique 
+       to_number(xi.ingred_id_nhpid) ingred_id, xi.nhpid_name, 
+       upper(xi.prep_group_code) prep_group_code,
+       xpm.prep_type_id, xi.source_group_code,
+       xi.product_mono_code, xi.mono_code single_mono_code,
+       xmi.mono_code, xmi.mono_id,
+       null source_prep_code
+  from x_ingredient_matrix xi, 
+       x$preparation_methods_xref xpm,
+       x$monograph_ingredients_xref xmi
+ where upper(xi.prep_group_code) = upper(xpm.prep_group_code)
+   and nvl(xi.product_mono_code,'x') = nvl(xmi.product_mono_code,'x')
+   and  xi.mono_code = xmi.single_mono_code
+   and to_number(xi.ingred_id_nhpid) = xmi.ingred_id
+union
+select to_number(xi.subing_id_nhpid)  ingred_id, xi.subing_name_nhpid, 
+       upper(xi.prep_group_code) subing_prep_code,
+       xpm.prep_type_id, xi.source_group_code,
+       xi.product_mono_code, xi.mono_code single_mono_code, 
+       xmi.mono_code, xmi.mono_id,
+       null source_prep_code
+  from x_sub_ingredient_matrix xi, 
+       x$preparation_methods_xref xpm,
+       x$monograph_ingredients_xref xmi
+ where xi.prep_group_code = xpm.prep_group_code
+   and nvl(xi.product_mono_code,'x') = nvl(xmi.product_mono_code,'x')
+   and  xi.mono_code = xmi.single_mono_code
+   and to_number(xi.ingred_id_nhpid) = xmi.ingred_id
+union
+select --unique 
+       to_number(si.source_ingred_id_nhpid) ingred_id, si.source_nhpid_name, 
+       null prep_group_code,
+       xpm.prep_type_id, si.source_group_code,
+       si.product_mono_code, si.mono_code single_mono_code,
+       xmi.mono_code, xmi.mono_id,
+       upper(si.source_prep_code) source_prep_code
+  from x_sources si, 
+       x$preparation_methods_xref xpm,
+       x$monograph_ingredients_xref xmi
+ where upper(si.source_prep_code) = upper(xpm.prep_group_code)
+   and nvl(si.product_mono_code,'x') = nvl(xmi.product_mono_code,'x')
+   and  si.mono_code = xmi.single_mono_code
+   and to_number(si.source_ingred_id_nhpid) = xmi.ingred_id
+union
+select unique 
+       to_number(si.source_ingred_id_nhpid) ingred_id, si.source_nhpid_name, 
+       null prep_group_code,
+       xpm.prep_type_id, si.source_group_code,
+       si.product_mono_code, si.mono_code single_mono_code,
+       xmi.mono_code_nhpid mono_code, 
+       xmi.monograph_id mono_id,
+       upper(si.source_prep_code) source_prep_code
+  from x_sources si, 
+       x$preparation_methods_xref xpm,
+       x$mono_source_ingredient xmi --x$monograph_ingredients_xref xmi
+ where upper(si.source_prep_code) = upper(xpm.prep_group_code)
+   and nvl(si.product_mono_code,'x') = nvl(xmi.product_mono_code,'x')
+   and  si.mono_code = xmi.mono_code --single_mono_code
+   and to_number(si.source_ingred_id_nhpid) = xmi.source_id --ingred_id
+)
+select unique q.*, rownum ingred_prep_code_id,  0, trunc(sysdate) from q 
+;
+commit;
+
+prompt ---------
+prompt v_assessment_dose_mop
+create or replace force view 
+v_assessment_dose_mop 
+as
+select distinct
+       x.prep_method_id,
+       ad.assessment_dose_id,
+       ad.mono_code,
+       ad.product_mono_code,
+       ad.single_mono_code,
+       --
+       sp.prep_group_code,
+       sp.unique_prep_code,
+       sp.unique_prep_description_eng prep_group_decode_eng,
+       sp.unique_prep_description_fr prep_group_decode_fr,
+       pt.preptype_code prep_type_code,
+       sp.potency, sp.extract, sp.ratio_type, sp.solvents,
+       sl.solvent_list_decode_eng solvent_list,
+       sp.quantity_crude_equivalent,
+       pp.prep_type_code source_prep_type_code,
+       sp.solvent_list_id, sp.prep_type_id,
+       ad.ingredient_id, ad.sub_ingredient_id, ad.source_ingredient_id
+  from x$assessment_dose_mop x,
+       v_assessment_doses ad,
+       x$preparation_methods_xref sp,
+       PREPARATION_TYPES pt,
+       x$solvent_lists sl,
+       x$ingredient_prep_code fd, x$prep_type_info_xref pp
+ where x.assessment_dose_id = ad.assessment_dose_id
+   and x.prep_method_id = sp.prep_method_id
+   and sp.prep_type_id = pt.preptype_id(+)
+   and sp.solvent_list_id = sl.solvent_list_id(+)
+   and ad.source_ingredient_id = fd.ingred_id(+)
+   and ad.monograph_id = fd.mono_id(+)
+   and fd.prep_type_id = pp.prep_type_id(+)
+;
+
+prompt ---------
+prompt compile schema and show errors
+
+exec dbms_utility.compile_schema(user);
+
+select object_name, object_type from user_objects where status = 'INVALID';
+
+set linesize 1000 pagesize 9999 trimspool on
+col name for a30
+col line for 99999
+col message_number for 99999
+col text for a132
+select t.name,
+       t.line,
+       t.message_number,
+       t.text
+  from user_errors t
+;
+update x$version set schema_version = '0.&&pth';
+commit;
+
+spool off
+

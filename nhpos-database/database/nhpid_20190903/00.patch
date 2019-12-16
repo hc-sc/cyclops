@@ -1,0 +1,9 @@
+--00.patch
+--author:  Ramy Ghonaim
+--date:    09/05/2019
+--
+ALTER TABLE xr_roa_by_df_min_age ADD (AGE_UNIT_ID NUMBER, AGE_UNIT_CODE VARCHAR2(50));
+--
+UPDATE xr_roa_by_df_min_age SET AGE_UNIT_CODE = 'yr' WHERE AGE_UNIT_CODE is null;
+--
+UPDATE xr_roa_by_df_min_age SET AGE_UNIT_ID = 169 WHERE AGE_UNIT_CODE = 'yr';

@@ -1,0 +1,54 @@
+--06.patch
+--author:  Ramy Ghonaim
+--date:    09/16/2019
+--note:		G0008 - Need to Add Method of Prep to Rule Criteria (Ex: Olive Leaf)
+--ticket:  DB-158, WPLA-305
+
+drop table x$assessment_dose_mop;
+--
+create table x$assessment_dose_mop as (
+    select unique 
+       xa.assessment_dose_id, xr.prep_method_id
+    from x$preparation_methods_xref xr,
+       x$assessment_dose_xref xa
+    where lower(trim(xa.prep_group_code)) = lower(trim(xr.prep_group_code))
+ )
+;
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table X$ASSESSMENT_DOSE_MOP
+  add constraint X$ASSESSMENT_DOSE_MOP_PK primary key (prep_method_id, assessment_dose_id);
+--
+alter table X$ASSESSMENT_DOSE_MOP
+  add constraint X$ASSESSMENT_DOSE_MOP_FK1 foreign key (prep_method_id)
+  references x$preparation_methods_xref (PREP_METHOD_ID);
+--
+alter table X$ASSESSMENT_DOSE_MOP
+  add constraint X$ASSESSMENT_DOSE_MOP_FK2 foreign key (assessment_dose_id)
+  references x$assessment_dose (ASSESSMENT_DOSE_ID);
+--
+CREATE OR REPLACE FORCE VIEW V_ASSESSMENT_DOSE_MOP AS ( 
+  select distinct
+       x.prep_method_id,
+       ad.assessment_dose_id,
+       ad.mono_code,
+       ad.product_mono_code,
+       ad.single_mono_code,
+       sp.prep_group_code,
+       nvl(sp.unique_prep_code, sp.prep_group_code) unique_prep_code,
+       nvl(sp.unique_prep_description_eng, sp.approved_name) prep_group_decode_eng,
+       nvl(sp.unique_prep_description_fr, sp.approved_name) prep_group_decode_fr,
+       sp.preptype_code,
+       sp.potency, sp.extract, sp.ratio_type, sp.solvents, sp.solvent_list,
+       sp.quantity_crude_equivalent,
+       sp.solvent_list_id, sp.prep_type_id,
+       ad.ingredient_id
+  from x$assessment_dose_mop x,
+       v_assessment_doses ad,
+       x$preparation_methods_xref sp
+  where x.assessment_dose_id = ad.assessment_dose_id
+   and x.prep_method_id = sp.prep_method_id
+);
+--
+create public synonym V_ASSESSMENT_DOSE_MOP for nhpdweb_owner.V_ASSESSMENT_DOSE_MOP;
+--
+grant select on V_ASSESSMENT_DOSE_MOP to public;   

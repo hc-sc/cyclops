@@ -1,0 +1,7 @@
+--02.patch
+--author:  Ramy Ghonaim
+--date:    09/09/2019
+
+update X$SUB_POPULATION t set t.age_max = null where t.age_max = 0;
+--
+update x$sub_pop_age_groups t set t.age_max = null where t.age_max = 0;

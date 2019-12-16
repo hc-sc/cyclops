@@ -75,9 +75,12 @@ The objective of this repository is to:
 
 ## NHPID
 
-- There are three sub-projects in this repository which are the application layer for the data
+See [installation instructions](InstallationInstructions_IP501.1.7.doc).
+
+- There are four sub-projects in this repository which are the application layer for the data and the DB configuration
   - [nnhpd-monograph-web-service-client](./nnhpd-monograph-web-service-client)
   - [nnhpd-monograph-web-service](./nnhpd-monograph-web-service)
     - Depends on nnhpd-monograph-web-service-client
     - Depends [ojdbc6](https://nhpid-dv-wb-01.canadacentral.cloudapp.azure.com/artifactory/hc-sc/ojdbc6/ojdbc6/6.0.0/) library, which is hosted on internal artifactory or as an [un-manged package](https://nhpid-dv-wb-01.canadacentral.cloudapp.azure.com/artifactory/hc-sc/ojdbc6/ojdbc6/6.0.0/)
   - [ingredient-domain](./ingredient-domain)
+  - [nhpos-database](./nhpos-database)

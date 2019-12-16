@@ -1,0 +1,69 @@
+#!groovy
+
+def VERSION="18.09"
+
+pipeline {
+    agent {
+      label 'standardv1'
+    }
+    
+    options { disableConcurrentBuilds() }
+    
+    environment {
+      containerRegistryCredentials = credentials('ARTIFACTORY_PUBLISH')
+      
+      //containerRegistry = 'localhost'
+      //containerRegistryPull = 'localhost'
+      
+      containerRegistry = 'localhost'
+      containerRegistryPull = 'localhost'
+    }
+    
+    stages {
+    
+      stage('appmeta Info') {
+        steps {
+          checkout scm
+          script {
+            def properties = readProperties  file: 'appmeta.properties'
+            
+            //Get basic meta-data
+            appGroup = properties.app_group
+            appBranch = properties.app_branch
+            appName = properties.app_name
+            appVersion = properties.app_version
+            buildId = env.BUILD_ID
+            version = appVersion + "." + (buildId ? buildId : "MANUAL-BUILD")
+            module = appGroup
+            
+            // Setup Artifactory connection
+            
+            artifactoryServer = Artifactory.server 'default'
+            artifactoryGradle = Artifactory.newGradleBuild()
+            artifactoryDocker = Artifactory.docker server: artifactoryServer
+            buildInfo = Artifactory.newBuildInfo()
+            artifactoryGradle.useWrapper = true
+            artifactoryGradle.usesPlugin = true
+            artifactoryGradle.deployer.deployArtifacts = true
+            artifactoryGradle.deployer repo: 'gradle-local', server: artifactoryServer
+            artifactoryGradle.resolver repo: 'gradle', server: artifactoryServer
+                        
+          }
+          
+        }
+      }
+      
+      stage("Base Build") {
+        steps {
+          //sh "make shellcheck"
+          sh '''
+              ./gradlew clean build --info
+              echo "PATH = ${PATH}"
+              
+              #deploy base
+              ./gradlew -P${PROFILE} bootRun
+          '''
+        }
+      }
+    }
+}

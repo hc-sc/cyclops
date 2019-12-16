@@ -1,0 +1,750 @@
+
+Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+Export file created by EXPORT:V11.02.00 via conventional path
+import done in WE8MSWIN1252 character set and AL16UTF16 NCHAR character set
+import server uses AL32UTF8 character set (possible charset conversion)
+. importing NHPDWEB_OWNER's objects into NHPDWEB_OWNER
+. . importing table        "ADMINISTRATION_ROUTES"         18 rows imported
+. . importing table           "ADMINRTE_CITATIONS"          0 rows imported
+. . importing table       "APPLICATION_PROPERTIES"          8 rows imported
+. . importing table             "APPLICATION_TEXT"       2862 rows imported
+. . importing table            "APPLICATION_TYPES"          9 rows imported
+. . importing table                  "ATTACHMENTS"       1171 rows imported
+. . importing table                "AUDIT_ENTRIES"          0 rows imported
+. . importing table        "BIOLOGICAL_IMPURITIES"          0 rows imported
+. . importing table                 "CHEM_CLASSES"          5 rows imported
+. . importing table              "CHEM_SUBCLASSES"         60 rows imported
+. . importing table                    "CITATIONS"       6318 rows imported
+. . importing table            "CITATION_SPECIALS"          8 rows imported
+. . importing table                  "CODED_RISKS"       1392 rows imported
+. . importing table         "CODED_RISKS_SYNONYMS"          0 rows imported
+. . importing table                 "COMMON_TERMS"         41 rows imported
+. . importing table            "COMMON_TERM_TYPES"          9 rows imported
+. . importing table          "CONSENCIT_CITATIONS"        163 rows imported
+. . importing table  "CONTEXT_SENSITIVE_CITATIONS"        114 rows imported
+. . importing table                    "COUNTRIES"        249 rows imported
+. . importing table           "DIETARY_ALLOWANCES"          0 rows imported
+. . importing table         "DOSAGEFORM_CITATIONS"          0 rows imported
+. . importing table  "DOSAGEFORM_DOSAGEFORMGROUPS"        105 rows imported
+. . importing table       "DOSAGEFORM_DOSAGEUNITS"        450 rows imported
+. . importing table          "DOSAGEFORM_SYNONYMS"         47 rows imported
+. . importing table                 "DOSAGE_FORMS"        125 rows imported
+. . importing table     "DOSAGE_FORM_ADMIN_ROUTES"        291 rows imported
+. . importing table           "DOSAGE_FORM_GROUPS"          7 rows imported
+. . importing table "DOSAGE_FORM_GROUP_TEST_SPECS"          0 rows imported
+. . importing table       "DOSAGE_FORM_TEST_SPECS"          0 rows imported
+. . importing table                "DOSAGE_RANGES"          0 rows imported
+. . importing table                 "DOSAGE_UNITS"         84 rows imported
+. . importing table    "ENDANG_ORGANISM_COUNTRIES"          0 rows imported
+. . importing table                   "ERROR_LOGS"          0 rows imported
+. . importing table               "EVIDENCE_TYPES"          7 rows imported
+. . importing table          "EX_ORG_GRP_FAMILIES"          0 rows imported
+. . importing table            "EX_ORG_GRP_GENERA"          0 rows imported
+. . importing table          "EX_ORG_GRP_ORGANISM"          0 rows imported
+. . importing table           "EX_ORG_GRP_SPECIES"          0 rows imported
+. . importing table           "EX_ORG_GRP_SUBTAXA"          0 rows imported
+. . importing table                     "FAMILIES"        595 rows imported
+. . importing table                       "GENERA"       1530 rows imported
+. . importing table                "GENERIC_TEXTS"        684 rows imported
+. . importing table  "GENERIC_TEXTS_ENG_CITATIONS"        191 rows imported
+. . importing table   "GENERIC_TEXTS_FR_CITATIONS"        189 rows imported
+. . importing table             "GEOGRAPHIC_AREAS"          9 rows imported
+. . importing table "HOMEOPATHIC_COMMON_NAME_HGTS"      15848 rows imported
+. . importing table        "HOMEOPATHIC_DILUTIONS"         11 rows imported
+. . importing table         "HOMEOPATHIC_FORMULAS"       3844 rows imported
+. . importing table    "HOMEOPATHIC_GENERIC_TEXTS"      31486 rows imported
+. . importing table      "HOMEOPATHIC_METHOFPREPS"       4478 rows imported
+. . importing table "HOMEOPATHIC_PREPARATION_TYPES"         79 rows imported
+. . importing table "HOMEOPATHIC_PROPER_NAME_HGTS"       7922 rows imported
+. . importing table  "HOMEOPATHIC_SOURCE_MAT_HGTS"       7665 rows imported
+. . importing table                  "ICH_CLASSES"          4 rows imported
+. . importing table       "ICH_CLASS_TEST_METHODS"          0 rows imported
+. . importing table                   "IMPURITIES"          0 rows imported
+. . importing table            "IMPURITY_SPECIALS"          0 rows imported
+. . importing table        "IMPURITY_TEST_METHODS"          0 rows imported
+. . importing table                  "INDICATIONS"          0 rows imported
+. . importing table      "INDICATION_ADMIN_ROUTES"          0 rows imported
+. . importing table             "INDICATION_TYPES"          3 rows imported
+. . importing table                  "INGREDIENTS"      16390 rows imported
+. . importing table    "INGREDIENT_BIO_IMPURITIES"          0 rows imported
+. . importing table        "INGREDIENT_CATEGORIES"         10 rows imported
+. . importing table        "INGREDIENT_IMPURITIES"          0 rows imported
+. . importing table "INGREDIENT_INGRED_IMPURITIES"          0 rows imported
+. . importing table    "INGREDIENT_NAME_SEARCH_MV"      91971 rows imported
+. . importing table "INGREDIENT_NAME_SEARCH_WS_MV"      91971 rows imported
+. . importing table "INGREDIENT_NHPCLASSIFICATIONS"       5859 rows imported
+. . importing table       "INGREDIENT_ORGANISM_MV"       4822 rows imported
+. . importing table          "INGREDIENT_ORGPARTS"       5107 rows imported
+. . importing table        "INGREDIENT_ORGPART_MV"      18762 rows imported
+. . importing table         "INGREDIENT_PREPTYPES"      11780 rows imported
+. . importing table      "INGREDIENT_QUALSYNO_CNS"      22784 rows imported
+. . importing table      "INGREDIENT_QUALSYNO_PNS"      14839 rows imported
+. . importing table      "INGREDIENT_QUALSYNO_QSS"      32545 rows imported
+. . importing table       "INGREDIENT_REG_ENTRIES"        998 rows imported
+. . importing table             "INGREDIENT_ROLES"      16497 rows imported
+. . importing table     "INGREDIENT_ROLE_PURPOSES"      11286 rows imported
+. . importing table           "INGREDIENT_SOURCES"          3 rows imported
+. . importing table          "INGREDIENT_SPECIALS"          6 rows imported
+. . importing table    "INGREDIENT_STD_GRADE_REFS"          0 rows imported
+. . importing table    "INGREDIENT_SUBINGREDIENTS"       1229 rows imported
+. . importing table          "INGREDIENT_SYNONYMS"          0 rows imported
+. . importing table       "INGREDIENT_SYNONYMS_MV"      17143 rows imported
+. . importing table      "INGREDIENT_TEST_METHODS"          0 rows imported
+. . importing table        "INGREDIENT_TEST_SPECS"          0 rows imported
+. . importing table          "IN_ORG_GRP_FAMILIES"        132 rows imported
+. . importing table            "IN_ORG_GRP_GENERA"         28 rows imported
+. . importing table          "IN_ORG_GRP_ORGANISM"       5235 rows imported
+. . importing table           "IN_ORG_GRP_SPECIES"        460 rows imported
+. . importing table           "IN_ORG_GRP_SUBTAXA"          0 rows imported
+. . importing table             "ITS_NHPID_ISSUES"          0 rows imported
+. . importing table                         "LOGS"       9944 rows imported
+. . importing table                  "LOG_DETAILS"       1545 rows imported
+. . importing table           "MANUFACT_PROCESSES"          0 rows imported
+. . importing table  "MANUFACT_PROCESS_IMPURITIES"          0 rows imported
+. . importing table "MANUFACT_PROCESS_INGREDIENTS"          0 rows imported
+. . importing table    "MANUFACT_PROC_BIO_IMPURTS"          0 rows imported
+. . importing table                 "MEDDRA_HLGTS"          0 rows imported
+. . importing table             "MEDDRA_HLGT_HLTS"          0 rows imported
+. . importing table                  "MEDDRA_HLTS"          0 rows imported
+. . importing table               "MEDDRA_HLT_PTS"          0 rows imported
+. . importing table                  "MEDDRA_LLTS"          0 rows imported
+. . importing table            "MEDDRA_PREF_TERMS"          0 rows imported
+. . importing table                   "MEDDRA_PTS"          0 rows imported
+. . importing table                  "MEDDRA_SOCS"          0 rows imported
+. . importing table             "MEDDRA_SOC_HLGTS"          0 rows imported
+. . importing table "MONODOSECOMB_MONOSRCORGPARTS"          0 rows imported
+. . importing table        "MONODOSECOMB_MONOUSES"         15 rows imported
+. . importing table     "MONODOSE_MONOSRCORGPARTS"          9 rows imported
+. . importing table   "MONODOSE_MONOSUBIDOSECOMBS"          6 rows imported
+. . importing table  "MONODRFRUSE_MONOSRCORGPARTS"          0 rows imported
+. . importing table "MONODURATION_MONOSRCORGPARTS"          0 rows imported
+. . importing table                   "MONOGRAPHS"       2590 rows imported
+. . importing table     "MONOGRAPH_CITATION_JOINS"      14433 rows imported
+. . importing table "MONOGRAPH_DIRECTIONS_FOR_USES"        317 rows imported
+. . importing table          "MONOGRAPH_DOSECOMBS"        772 rows imported
+. . importing table              "MONOGRAPH_DOSES"        722 rows imported
+. . importing table     "MONOGRAPH_DOSE_CITATIONS"       2090 rows imported
+. . importing table      "MONOGRAPH_DOSE_GENTEXTS"          0 rows imported
+. . importing table     "MONOGRAPH_DOSE_MONO_DFUS"        581 rows imported
+. . importing table     "MONOGRAPH_DOSE_MONO_USES"        225 rows imported
+. . importing table "MONOGRAPH_DOSE_NOTE_GENTEXTS"        231 rows imported
+. . importing table      "MONOGRAPH_DOSE_ORGPARTS"          0 rows imported
+. . importing table  "MONOGRAPH_DRFRUSE_CITATIONS"        269 rows imported
+. . importing table   "MONOGRAPH_DRFRUSE_GENTEXTS"          0 rows imported
+. . importing table  "MONOGRAPH_DRFRUSE_MONO_USES"         52 rows imported
+. . importing table   "MONOGRAPH_DRFRUSE_ORGPARTS"          0 rows imported
+. . importing table          "MONOGRAPH_DURATIONS"        224 rows imported
+. . importing table "MONOGRAPH_DURATION_CITATIONS"        264 rows imported
+. . importing table  "MONOGRAPH_DURATION_GENTEXTS"          0 rows imported
+. . importing table  "MONOGRAPH_DURATION_ORGPARTS"          0 rows imported
+. . importing table     "MONOGRAPH_DUR_MONOGRAPHS"        162 rows imported
+. . importing table      "MONOGRAPH_DUR_MONO_USES"        242 rows imported
+. . importing table            "MONOGRAPH_ENTRIES"       3836 rows imported
+. . importing table "MONOGRAPH_ENTRIES_COMMONNAMES"          0 rows imported
+. . importing table   "MONOGRAPH_ENTRIES_ORGPARTS"          0 rows imported
+. . importing table "MONOGRAPH_ENTRIES_PREPTYPEGRPS"        197 rows imported
+. . importing table  "MONOGRAPH_ENTRIES_PREPTYPES"         42 rows imported
+. . importing table "MONOGRAPH_ENTRIES_SRC_INGREDS"          0 rows imported
+. . importing table "MONOGRAPH_ENTRY_GENERIC_TEXTS"          0 rows imported
+. . importing table "MONOGRAPH_ENTRY_QUALSYNO_CNS"        789 rows imported
+. . importing table "MONOGRAPH_ENTRY_QUALSYNO_PNS"        241 rows imported
+. . importing table      "MONOGRAPH_GENERIC_TEXTS"          0 rows imported
+. . importing table  "MONOGRAPH_GEN_NOTE_GENTEXTS"        115 rows imported
+. . importing table             "MONOGRAPH_GROUPS"         41 rows imported
+. . importing table    "MONOGRAPH_MONOGRAPH_TYPES"       2513 rows imported
+. . importing table  "MONOGRAPH_NMI_NOTE_GENTEXTS"          3 rows imported
+. . importing table             "MONOGRAPH_PHASES"          3 rows imported
+. . importing table   "MONOGRAPH_PHASE_MONOGRAPHS"          0 rows imported
+. . importing table "MONOGRAPH_PHASE_MONO_DURATIONS"          2 rows imported
+. . importing table       "MONOGRAPH_PREPARATIONS"        221 rows imported
+. . importing table "MONOGRAPH_RISKSTMT_CITATIONS"       1269 rows imported
+. . importing table  "MONOGRAPH_RISKSTMT_GENTEXTS"          0 rows imported
+. . importing table  "MONOGRAPH_RISKSTMT_ORGPARTS"          0 rows imported
+. . importing table    "MONOGRAPH_RISK_MONOGRAPHS"       1000 rows imported
+. . importing table "MONOGRAPH_RISK_NOTE_GENTEXTS"          2 rows imported
+. . importing table   "MONOGRAPH_RISK_SRC_INGREDS"          0 rows imported
+. . importing table         "MONOGRAPH_RISK_STMTS"       1392 rows imported
+. . importing table      "MONOGRAPH_ROA_CITATIONS"         69 rows imported
+. . importing table   "MONOGRAPH_ROA_DOSAGE_FORMS"        164 rows imported
+. . importing table       "MONOGRAPH_ROA_GENTEXTS"        307 rows imported
+. . importing table      "MONOGRAPH_ROUTEOFADMINS"        309 rows imported
+. . importing table  "MONOGRAPH_RSKSTMT_MONO_USES"        123 rows imported
+. . importing table "MONOGRAPH_SPEC_INFO_GENTEXTS"        186 rows imported
+. . importing table "MONOGRAPH_STOR_COND_GENTEXTS"         31 rows imported
+. . importing table        "MONOGRAPH_SUBINGCOMBS"          5 rows imported
+. . importing table        "MONOGRAPH_SUBINGDOSES"          5 rows imported
+. . importing table   "MONOGRAPH_SUBING_DOSECOMBS"          7 rows imported
+. . importing table    "MONOGRAPH_SUB_POPULATIONS"        486 rows imported
+. . importing table        "MONOGRAPH_SYNONYMS_MV"       3836 rows imported
+. . importing table              "MONOGRAPH_TYPES"          6 rows imported
+. . importing table               "MONOGRAPH_USES"       1705 rows imported
+. . importing table    "MONOGRAPH_USES_MONOGRAPHS"       1651 rows imported
+. . importing table      "MONOGRAPH_USE_CITATIONS"       2594 rows imported
+. . importing table       "MONOGRAPH_USE_GENTEXTS"          0 rows imported
+. . importing table       "MONOGRAPH_USE_ORGPARTS"          0 rows imported
+. . importing table     "MONORISK_MONOSRCORGPARTS"          3 rows imported
+. . importing table  "MONOSBINGDCMBS_MONOSBINGDSS"          7 rows imported
+. . importing table     "MONOUSE_DOSAGEFORMGROUPS"          2 rows imported
+. . importing table      "MONOUSE_MONOSRCORGPARTS"         33 rows imported
+. . importing table     "MONO_DOSECOMB_MONO_DOSES"        824 rows imported
+. . importing table "MONO_ENTRIES_TXT_MONOSOURCES"        181 rows imported
+. . importing table    "MONO_ENTRY_MONOSRCINGREDS"          0 rows imported
+. . importing table   "MONO_ENTRY_MONOSRCORGPARTS"        186 rows imported
+. . importing table    "MONO_ENTRY_MONO_DOSECOMBS"        230 rows imported
+. . importing table    "MONO_PHASE_MONO_DOSECOMBS"          3 rows imported
+. . importing table      "MONO_SOURCE_INGREDIENTS"         38 rows imported
+. . importing table         "MONO_SOURCE_ORGPARTS"        300 rows imported
+. . importing table     "MONO_SRCINGRED_CITATIONS"         45 rows imported
+. . importing table    "MONO_SRCORGPART_CITATIONS"        542 rows imported
+. . importing table       "NHPSAS_INGREDIENT_SYNC"      17672 rows imported
+. . importing table          "NHP_CLASSIFICATIONS"         13 rows imported
+. . importing table     "NHP_CLASS_BIO_IMPURITIES"          0 rows imported
+. . importing table  "NHP_CLASS_IDNT_TEST_METHODS"          0 rows imported
+. . importing table         "NHP_CLASS_IMPURITIES"          0 rows imported
+. . importing table        "NHP_CLASS_INGREDIENTS"          0 rows imported
+. . importing table   "NHP_CLASS_QTY_TEST_METHODS"          0 rows imported
+. . importing table          "NHP_STAGE_MAT_VIEWS"         19 rows imported
+. . importing table          "NHP_STAGE_SEQUENCES"        106 rows imported
+. . importing table             "NHP_STAGE_TABLES"        290 rows imported
+. . importing table                    "ORGANISMS"       2826 rows imported
+. . importing table      "ORGANISM_CONSTITUENT_MV"       4035 rows imported
+. . importing table           "ORGANISM_COUNTRIES"         11 rows imported
+. . importing table    "ORGANISM_GEOGRAPHIC_AREAS"       3479 rows imported
+. . importing table              "ORGANISM_GROUPS"       4973 rows imported
+. . importing table               "ORGANISM_PARTS"       5229 rows imported
+. . importing table "ORGANISM_PART_SUBINGREDIENTS"       4035 rows imported
+. . importing table          "ORGANISM_PART_TYPES"        382 rows imported
+. . importing table   "ORGANISM_QUALIFIEDSYNONYMS"       5632 rows imported
+. . importing table            "ORGANISM_SYNONYMS"          0 rows imported
+. . importing table               "ORGANISM_TYPES"         45 rows imported
+. . importing table         "ORGANISM_TYPE_GROUPS"          6 rows imported
+. . importing table "ORGANISM_TYPE_GRP_ORGPARTTYPES"        391 rows imported
+. . importing table         "ORGPARTTYPE_SYNONYMS"        205 rows imported
+. . importing table      "ORGPART_CONSTITUENTS_MV"       5229 rows imported
+. . importing table       "ORGPART_CONSTITUENT_MV"       4035 rows imported
+. . importing table         "ORGPART_GROUPNAME_MV"        145 rows imported
+. . importing table          "ORGPART_ORGANISM_MV"       5084 rows imported
+. . importing table          "ORGPART_PARTTYPE_MV"       5229 rows imported
+. . importing table                  "PERMISSIONS"         54 rows imported
+. . importing table            "PREPARATION_RULES"          0 rows imported
+. . importing table            "PREPARATION_TYPES"        149 rows imported
+. . importing table      "PREPARATION_TYPE_GROUPS"         72 rows imported
+. . importing table           "PREPRULES_SOLVENTS"          0 rows imported
+. . importing table           "PREPTYPES_SOLVENTS"         36 rows imported
+. . importing table      "PREPTYPE_PREPTYPEGROUPS"        345 rows imported
+. . importing table                "PRODUCT_TYPES"          0 rows imported
+. . importing table             "PROVINCES_STATES"         64 rows imported
+. . importing table           "PUBLISHED_JOURNALS"      20647 rows imported
+. . importing table                     "PURPOSES"        120 rows imported
+. . importing table             "PURPOSE_ADMINRTS"        218 rows imported
+. . importing table             "PURPOSE_SYNONYMS"         24 rows imported
+. . importing table           "PURPOSE_TEST_SPECS"          0 rows imported
+. . importing table  "QUALIFIEDSYNONYM_REFERENCES"      41366 rows imported
+. . importing table "QUALIFIEDSYNONYM_REFERENCES_MV"      42396 rows imported
+. . importing table           "QUALIFIED_SYNONYMS"      42396 rows imported
+. . importing table     "QUALITY_TOLERANCE_MODELS"          0 rows imported
+. . importing table                   "RATIONALES"       5735 rows imported
+. . importing table "RECOMMENDED_DIETARY_ALLOWANCES"          0 rows imported
+. . importing table                "REFERENCES_MV"       1474 rows imported
+. . importing table                         "REFS"       1474 rows imported
+. . importing table             "REGISTRY_ENTRIES"       6643 rows imported
+. . importing table  "RELATEDSOURCEINGREDIENTS_MV"       1227 rows imported
+. . importing table                 "RESTRICTIONS"       7611 rows imported
+. . importing table        "RESTRICTION_CITATIONS"          3 rows imported
+. . importing table    "RESTRICTION_PRODUCT_TYPES"          0 rows imported
+. . importing table         "RESTRICTION_PURPOSES"       1963 rows imported
+. . importing table            "RESTRICTION_TYPES"          4 rows imported
+. . importing table                        "RISKS"          3 rows imported
+. . importing table         "RISK_STMTS_CITATIONS"          0 rows imported
+. . importing table                   "RISK_TYPES"          3 rows imported
+. . importing table                "ROLE_SPECIALS"          5 rows imported
+. . importing table                     "SOLVENTS"         64 rows imported
+. . importing table       "SOURCEORGANISMPARTS_MV"      18762 rows imported
+. . importing table             "SOURCE_CITATIONS"          0 rows imported
+. . importing table                      "SPECIES"       2739 rows imported
+. . importing table                   "SPECIES_MV"       2739 rows imported
+. . importing table    "STANDARD_GRADE_REFERENCES"          9 rows imported
+. . importing table               "SUBINGREDIENTS"       5264 rows imported
+. . importing table   "SUBINGREDIENT_ADMIN_ROUTES"       3331 rows imported
+. . importing table   "SUBINGREDIENT_DOSAGE_FORMS"          0 rows imported
+. . importing table             "SUBINGREDIENT_MV"       5264 rows imported
+. . importing table           "SUBINGREDIENT_REFS"       4309 rows imported
+. . importing table                      "SUBTAXA"        124 rows imported
+. . importing table                   "SUBTAXA_MV"        124 rows imported
+. . importing table               "SUB_POPULATION"        132 rows imported
+. . importing table                     "SYNONYMS"      39803 rows imported
+. . importing table                 "SYNONYM_REFS"          0 rows imported
+. . importing table  "SYNONYM_TEXTS_ENG_CITATIONS"       1090 rows imported
+. . importing table   "SYNONYM_TEXTS_FR_CITATIONS"       1012 rows imported
+. . importing table                         "TAXA"       5101 rows imported
+. . importing table              "TEST_CATEGORIES"          0 rows imported
+. . importing table                 "TEST_METHODS"        451 rows imported
+. . importing table       "TEST_METHOD_CATEGORIES"          0 rows imported
+. . importing table         "TEST_METHOD_SUBTYPES"        140 rows imported
+. . importing table            "TEST_METHOD_TYPES"         13 rows imported
+. . importing table          "TEST_SPECIFICATIONS"          0 rows imported
+. . importing table           "TEST_SPEC_TST_MTDS"          0 rows imported
+. . importing table       "TEXT_MONO_SRCMATERIALS"        181 rows imported
+. . importing table               "TRAD_PARADIGMS"          0 rows imported
+. . importing table      "TXTMONOSRCMAT_CITATIONS"          0 rows imported
+. . importing table                        "UNITS"        210 rows imported
+. . importing table                  "UNITS_TYPES"         21 rows imported
+. . importing table        "USERACCOUNT_USERROLES"          0 rows imported
+. . importing table         "USERROLE_PERMISSIONS"          0 rows imported
+. . importing table                "USER_ACCOUNTS"         38 rows imported
+. . importing table                   "USER_ROLES"          5 rows imported
+. . importing table                "USE_CITATIONS"          0 rows imported
+. . importing table                    "USE_TYPES"          3 rows imported
+. . importing table        "X$ALT_ASSESSMENT_DOSE"        122 rows imported
+. . importing table            "X$ASSESSMENT_DOSE"   16562302 rows imported
+. . importing table        "X$ASSESSMENT_DOSE_DFU"   18072473 rows imported
+. . importing table "X$ASSESSMENT_DOSE_DOSAGE_FORM"   71832189 rows imported
+. . importing table   "X$ASSESSMENT_DOSE_DOSE_CAT"      13388 rows imported
+. . importing table   "X$ASSESSMENT_DOSE_DURATION"      61429 rows imported
+. . importing table        "X$ASSESSMENT_DOSE_MOP"     126366 rows imported
+. . importing table       "X$ASSESSMENT_DOSE_RISK"   16348369 rows imported
+. . importing table  "X$ASSESSMENT_DOSE_STOR_COND"       7136 rows imported
+. . importing table    "X$ASSESSMENT_DOSE_SUB_POP"   16561764 rows imported
+. . importing table        "X$ASSESSMENT_DOSE_USE"   16561525 rows imported
+. . importing table       "X$ASSESSMENT_DOSE_XREF"   16708468 rows imported
+. . importing table                "X$COMBO_DOSES"      70220 rows imported
+. . importing table           "X$COMBO_DOSE_CODES"         55 rows imported
+. . importing table                   "X$DFU_XREF"        760 rows imported
+. . importing table              "X$DOSE_CAT_XREF"          6 rows imported
+. . importing table            "X$DOSE_FORM_TYPES"        118 rows imported
+. . importing table              "X$DURATION_XREF"        102 rows imported
+. . importing table                "X$GROUP_RULES"        195 rows imported
+. . importing table          "X$INGREDIENT_GROUPS"       4594 rows imported
+. . importing table    "X$INGREDIENT_GROUP_GROUPS"         26 rows imported
+. . importing table "X$INGREDIENT_GROUP_INGREDIENTS"       1400 rows imported
+. . importing table       "X$INGREDIENT_PREP_CODE"       7349 rows imported
+. . importing table   "X$INGRED_GROUP_GROUP_RULES"       6222 rows imported
+. . importing table "X$MONOGRAPH_INGREDIENTS_XREF"       5864 rows imported
+. . importing table "X$MONOGRAPH_INGRED_NAME_XREF"       9159 rows imported
+. . importing table "X$MONOGRAPH_INGRED_NAMXREF_BKP"       3743 rows imported
+. . importing table              "X$MONOGRAPH_ROA"       1267 rows imported
+. . importing table   "X$MONOGRAPH_SUB_INGREDIENT"        288 rows imported
+. . importing table             "X$MONOGRAPH_XREF"       1719 rows imported
+. . importing table            "X$MONO_FORM_TYPES"        272 rows imported
+. . importing table     "X$MONO_SOURCE_INGREDIENT"       7001 rows imported
+. . importing table "X$MONO_SOURCE_SUB_INGREDIENT"        306 rows imported
+. . importing table "X$NON_INGRED_ORGNSM_PREP_CODE"         35 rows imported
+. . importing table        "X$ORGANISM_INGREDIENT"      10892 rows imported
+. . importing table  "X$ORGANISM_INGREDIENT_INULL"        114 rows imported
+. . importing table      "X$ORGANISM_INGREDIENT_X"      11004 rows imported
+. . importing table "X$ORPHAN_SOURCE_ORGANISM_TYPES"         22 rows imported
+. . importing table   "X$PREPARATION_METHODS_XREF"        549 rows imported
+. . importing table        "X$PREP_TYPE_INFO_XREF"        167 rows imported
+. . importing table                 "X$RISK_TYPES"          3 rows imported
+. . importing table                  "X$RISK_XREF"        673 rows imported
+. . importing table            "X$ROA_DOSAGE_FORM"        291 rows imported
+. . importing table              "X$SOLVENT_LISTS"          5 rows imported
+. . importing table      "X$SOLVENT_SOLVENT_LISTS"        142 rows imported
+. . importing table "X$SOURCE_ID_SOURCE_ORG_TYPES"        194 rows imported
+. . importing table      "X$SOURCE_ORGANISM_TYPES"        128 rows imported
+. . importing table    "X$STORAGE_CONDITIONS_XREF"         21 rows imported
+. . importing table             "X$SUB_POPULATION"        163 rows imported
+. . importing table        "X$SUB_POPULATION_XREF"        166 rows imported
+. . importing table         "X$SUB_POP_AGE_GROUPS"         99 rows imported
+. . importing table         "X$SUB_POP_CONDITIONS"          9 rows imported
+. . importing table             "X$SUB_POP_GROUPS"          5 rows imported
+. . importing table   "X$SUB_POP_GROUP_AGE_GROUPS"        150 rows imported
+. . importing table              "X$SUB_POP_SEXES"          3 rows imported
+. . importing table           "X$UNITS_OF_MEASURE"          0 rows imported
+. . importing table                   "X$USE_XREF"       1034 rows imported
+. . importing table                    "X$VERSION"          1 rows imported
+IMP-00041: Warning: object created with compilation warnings
+ "CREATE FORCE VIEW "NHPDWEB_OWNER"."V_SOURCE_MATERIAL_C"                   ("
+ ""INGRED_NHPID_NAME_ENG","INGRED_NHPID_NAME_FR","SOURCE_NHPID_NAME_ENG","SOU"
+ "RCE_NHPID_NAME_FR","PRODUCT_MONO_CODE","SINGLE_MONO_CODE","MONO_CODE","MONO"
+ "_ID","INGREDIENT_ID","SOURCE_ID","SRC_NAME_TYPE_ID","ORGANISM_ID","ORGANISM"
+ "_NAME","ORGANISM_TYPE_ID","ORGANISM_TYPE_NAME_ENG","ORGANISM_TYPE_NAME_FR","
+ ""ORG_GROUP_ID","ORG_GROUP_NAME_ENG","ORG_GROUP_NAME_FR","PREPARATION_ID","S"
+ "OURCE_MATERIAL_PART_ID","SOURCE_MATERIAL_PART_TYPE_CODE","SOURCE_MATERIAL_P"
+ "ART_NAME_ENG","SOURCE_MATERIAL_PART_NAME_FR","SOURCE_MATERIAL_STRAIN","ORGP"
+ "ARTTYPE_ID") AS "
+ "select "INGRED_NHPID_NAME_ENG","INGRED_NHPID_NAME_FR","SOURCE_NHPID_NAME_EN"
+ "G","SOURCE_NHPID_NAME_FR","PRODUCT_MONO_CODE","SINGLE_MONO_CODE","MONO_CODE"
+ "","MONO_ID","INGREDIENT_ID","SOURCE_ID","SRC_NAME_TYPE_ID","ORGANISM_ID","O"
+ "RGANISM_NAME","ORGANISM_TYPE_ID","ORGANISM_TYPE_NAME_ENG","ORGANISM_TYPE_NA"
+ "ME_FR","ORG_GROUP_ID","ORG_GROUP_NAME_ENG","ORG_GROUP_NAME_FR","PREPARATION"
+ "_ID","SOURCE_MATERIAL_PART_ID","SOURCE_MATERIAL_PART_TYPE_CODE","SOURCE_MAT"
+ "ERIAL_PART_NAME_ENG","SOURCE_MATERIAL_PART_NAME_FR","SOURCE_MATERIAL_STRAIN"
+ "","ORGPARTTYPE_ID" from v_source_material t where t.mono_id is not null"
+IMP-00017: following statement failed with ORACLE error 6550:
+ "BEGIN  "
+ "ctxsys.driimp.create_index('INGREDIENT_SNNMS_MV_IDX7','INGREDIENT_SYNONYMS_"
+ "MV',USER,"
+ "'','1','ENGLISH_SEARCHTERM','1',"
+ "'4000','17143','8130','17144',"
+ "NULL, NULL, NULL, 0,'Y',NULL, NULL, NULL, NULL, NULL);"
+ ""
+ ""
+ "ctxsys.driimp.set_object('DATASTORE','DIRECT_DATASTORE',0);"
+ ""
+ "ctxsys.driimp.set_object('DATATYPE','CHAR_DATATYPE',0);"
+ ""
+ "ctxsys.driimp.set_object('DATAX','SYNCH_DATAX',0);"
+ ""
+ "ctxsys.driimp.set_object('FILTER','NULL_FILTER',0);"
+ ""
+ "ctxsys.driimp.set_object('SECTION_GROUP','NULL_SECTION_GROUP',0);"
+ ""
+ "ctxsys.driimp.set_object('LEXER','BASIC_LEXER',0);"
+ ""
+ "ctxsys.driimp.set_object('WORDLIST','BASIC_WORDLIST',2);"
+ "ctxsys.driimp.set_value('STEMMER','1');"
+ "ctxsys.driimp.set_value('FUZZY_MATCH','1');"
+ ""
+ "ctxsys.driimp.set_object('STOPLIST','BASIC_STOPLIST',114);"
+ "ctxsys.driimp.set_value('STOP_WORD','Mr');"
+ "ctxsys.driimp.set_value('STOP_WORD','Mrs');"
+ "ctxsys.driimp.set_value('STOP_WORD','Ms');"
+ "ctxsys.driimp.set_value('STOP_WORD','a');"
+ "ctxsys.driimp.set_value('STOP_WORD','all');"
+ "ctxsys.driimp.set_value('STOP_WORD','almost');"
+ "ctxsys.driimp.set_value('STOP_WORD','also');"
+ "ctxsys.driimp.set_value('STOP_WORD','although');"
+ "ctxsys.driimp.set_value('STOP_WORD','an');"
+ "ctxsys.driimp.set_value('STOP_WORD','and');"
+ "ctxsys.driimp.set_value('STOP_WORD','any');"
+ "ctxsys.driimp.set_value('STOP_WORD','are');"
+ "ctxsys.driimp.set_value('STOP_WORD','as');"
+ "ctxsys.driimp.set_value('STOP_WORD','at');"
+ "ctxsys.driimp.set_value('STOP_WORD','be');"
+ "ctxsys.driimp.set_value('STOP_WORD','because');"
+ "ctxsys.driimp.set_value('STOP_WORD','been');"
+ "ctxsys.driimp.set_value('STOP_WORD','both');"
+ "ctxsys.driimp.set_value('STOP_WORD','but');"
+ "ctxsys.driimp.set_value('STOP_WORD','by');"
+ "ctxsys.driimp.set_value('STOP_WORD','can');"
+ "ctxsys.driimp.set_value('STOP_WORD','could');"
+ "ctxsys.driimp.set_value('STOP_WORD','d');"
+ "ctxsys.driimp.set_value('STOP_WORD','did');"
+ "ctxsys.driimp.set_value('STOP_WORD','do');"
+ "ctxsys.driimp.set_value('STOP_WORD','does');"
+ "ctxsys.driimp.set_value('STOP_WORD','either');"
+ "ctxsys.driimp.set_value('STOP_WORD','for');"
+ "ctxsys.driimp.set_value('STOP_WORD','from');"
+ "ctxsys.driimp.set_value('STOP_WORD','had');"
+ "ctxsys.driimp.set_value('STOP_WORD','has');"
+ "ctxsys.driimp.set_value('STOP_WORD','have');"
+ "ctxsys.driimp.set_value('STOP_WORD','having');"
+ "ctxsys.driimp.set_value('STOP_WORD','he');"
+ "ctxsys.driimp.set_value('STOP_WORD','her');"
+ "ctxsys.driimp.set_value('STOP_WORD','here');"
+ "ctxsys.driimp.set_value('STOP_WORD','hers');"
+ "ctxsys.driimp.set_value('STOP_WORD','him');"
+ "ctxsys.driimp.set_value('STOP_WORD','his');"
+ "ctxsys.driimp.set_value('STOP_WORD','how');"
+ "ctxsys.driimp.set_value('STOP_WORD','however');"
+ "ctxsys.driimp.set_value('STOP_WORD','i');"
+ "ctxsys.driimp.set_value('STOP_WORD','if');"
+ "ctxsys.driimp.set_value('STOP_WORD','in');"
+ "ctxsys.driimp.set_value('STOP_WORD','into');"
+ "ctxsys.driimp.set_value('STOP_WORD','is');"
+ "ctxsys.driimp.set_value('STOP_WORD','it');"
+ "ctxsys.driimp.set_value('STOP_WORD','its');"
+ "ctxsys.driimp.set_value('STOP_WORD','just');"
+ "ctxsys.driimp.set_value('STOP_WORD','ll');"
+ "ctxsys.driimp.set_value('STOP_WORD','me');"
+ "ctxsys.driimp.set_value('STOP_WORD','might');"
+ "ctxsys.driimp.set_value('STOP_WORD','my');"
+ "ctxsys.driimp.set_value('STOP_WORD','no');"
+ "ctxsys.driimp.set_value('STOP_WORD','non');"
+ "ctxsys.driimp.set_value('STOP_WORD','nor');"
+ "ctxsys.driimp.set_value('STOP_WORD','not');"
+ "ctxsys.driimp.set_value('STOP_WORD','of');"
+ "ctxsys.driimp.set_value('STOP_WORD','on');"
+ "ctxsys.driimp.set_value('STOP_WORD','one');"
+ "ctxsys.driimp.set_value('STOP_WORD','only');"
+ "ctxsys.driimp.set_value('STOP_WORD','onto');"
+ "ctxsys.driimp.set_value('STOP_WORD','or');"
+ ""
+ "ctxsys.driimp.set_value('STOP_WORD','our');"
+ "ctxsys.driimp.set_value('STOP_WORD','ours');"
+ "ctxsys.driimp.set_value('STOP_WORD','s');"
+ "ctxsys.driimp.set_value('STOP_WORD','shall');"
+ "ctxsys.driimp.set_value('STOP_WORD','she');"
+ "ctxsys.driimp.set_value('STOP_WORD','should');"
+ "ctxsys.driimp.set_value('STOP_WORD','since');"
+ "ctxsys.driimp.set_value('STOP_WORD','so');"
+ "ctxsys.driimp.set_value('STOP_WORD','some');"
+ "ctxsys.driimp.set_value('STOP_WORD','still');"
+ "ctxsys.driimp.set_value('STOP_WORD','such');"
+ "ctxsys.driimp.set_value('STOP_WORD','t');"
+ "ctxsys.driimp.set_value('STOP_WORD','than');"
+ "ctxsys.driimp.set_value('STOP_WORD','that');"
+ "ctxsys.driimp.set_value('STOP_WORD','the');"
+ "ctxsys.driimp.set_value('STOP_WORD','their');"
+ "ctxsys.driimp.set_value('STOP_WORD','them');"
+ "ctxsys.driimp.set_value('STOP_WORD','then');"
+ "ctxsys.driimp.set_value('STOP_WORD','there');"
+ "ctxsys.driimp.set_value('STOP_WORD','therefore');"
+ "ctxsys.driimp.set_value('STOP_WORD','these');"
+ "ctxsys.driimp.set_value('STOP_WORD','they');"
+ "ctxsys.driimp.set_value('STOP_WORD','this');"
+ "ctxsys.driimp.set_value('STOP_WORD','those');"
+ "ctxsys.driimp.set_value('STOP_WORD','though');"
+ "ctxsys.driimp.set_value('STOP_WORD','through');"
+ "ctxsys.driimp.set_value('STOP_WORD','thus');"
+ "ctxsys.driimp.set_value('STOP_WORD','to');"
+ "ctxsys.driimp.set_value('STOP_WORD','too');"
+ "ctxsys.driimp.set_value('STOP_WORD','until');"
+ "ctxsys.driimp.set_value('STOP_WORD','ve');"
+ "ctxsys.driimp.set_value('STOP_WORD','very');"
+ "ctxsys.driimp.set_value('STOP_WORD','was');"
+ "ctxsys.driimp.set_value('STOP_WORD','we');"
+ "ctxsys.driimp.set_value('STOP_WORD','were');"
+ "ctxsys.driimp.set_value('STOP_WORD','what');"
+ "ctxsys.driimp.set_value('STOP_WORD','when');"
+ "ctxsys.driimp.set_value('STOP_WORD','where');"
+ "ctxsys.driimp.set_value('STOP_WORD','whether');"
+ "ctxsys.driimp.set_value('STOP_WORD','which');"
+ "ctxsys.driimp.set_value('STOP_WORD','while');"
+ "ctxsys.driimp.set_value('STOP_WORD','who');"
+ "ctxsys.driimp.set_value('STOP_WORD','whose');"
+ "ctxsys.driimp.set_value('STOP_WORD','why');"
+ "ctxsys.driimp.set_value('STOP_WORD','will');"
+ "ctxsys.driimp.set_value('STOP_WORD','with');"
+ "ctxsys.driimp.set_value('STOP_WORD','would');"
+ "ctxsys.driimp.set_value('STOP_WORD','yet');"
+ "ctxsys.driimp.set_value('STOP_WORD','you');"
+ "ctxsys.driimp.set_value('STOP_WORD','your');"
+ "ctxsys.driimp.set_value('STOP_WORD','yours');"
+ ""
+ "ctxsys.driimp.set_object('STORAGE','BASIC_STORAGE',2);"
+ "ctxsys.driimp.set_value('R_TABLE_CLAUSE','lob (data) store as (cache)');"
+ "ctxsys.driimp.set_value('I_INDEX_CLAUSE','compress 2');"
+ ""
+ "commit;"
+ "COMMIT; END;"
+IMP-00003: ORACLE error 6550 encountered
+ORA-06550: line 2, column 1:
+PLS-00306: wrong number or types of arguments in call to 'CREATE_INDEX'
+ORA-06550: line 2, column 1:
+PL/SQL: Statement ignored
+IMP-00088: Problem importing metadata for index INGREDIENT_SNNMS_MV_IDX7. Index creation will be skipped
+IMP-00017: following statement failed with ORACLE error 6550:
+ "BEGIN  "
+ "ctxsys.driimp.create_index('INGREDIENT_SNNMS_MV_IDX8','INGREDIENT_SYNONYMS_"
+ "MV',USER,"
+ "'','1','FRENCH_SEARCHTERM','1',"
+ "'4000','17143','8130','17144',"
+ "NULL, NULL, NULL, 0,'Y',NULL, NULL, NULL, NULL, NULL);"
+ ""
+ ""
+ "ctxsys.driimp.set_object('DATASTORE','DIRECT_DATASTORE',0);"
+ ""
+ "ctxsys.driimp.set_object('DATATYPE','CHAR_DATATYPE',0);"
+ ""
+ "ctxsys.driimp.set_object('DATAX','SYNCH_DATAX',0);"
+ ""
+ "ctxsys.driimp.set_object('FILTER','NULL_FILTER',0);"
+ ""
+ "ctxsys.driimp.set_object('SECTION_GROUP','NULL_SECTION_GROUP',0);"
+ ""
+ "ctxsys.driimp.set_object('LEXER','BASIC_LEXER',0);"
+ ""
+ "ctxsys.driimp.set_object('WORDLIST','BASIC_WORDLIST',2);"
+ "ctxsys.driimp.set_value('STEMMER','1');"
+ "ctxsys.driimp.set_value('FUZZY_MATCH','1');"
+ ""
+ "ctxsys.driimp.set_object('STOPLIST','BASIC_STOPLIST',114);"
+ "ctxsys.driimp.set_value('STOP_WORD','Mr');"
+ "ctxsys.driimp.set_value('STOP_WORD','Mrs');"
+ "ctxsys.driimp.set_value('STOP_WORD','Ms');"
+ "ctxsys.driimp.set_value('STOP_WORD','a');"
+ "ctxsys.driimp.set_value('STOP_WORD','all');"
+ "ctxsys.driimp.set_value('STOP_WORD','almost');"
+ "ctxsys.driimp.set_value('STOP_WORD','also');"
+ "ctxsys.driimp.set_value('STOP_WORD','although');"
+ "ctxsys.driimp.set_value('STOP_WORD','an');"
+ "ctxsys.driimp.set_value('STOP_WORD','and');"
+ "ctxsys.driimp.set_value('STOP_WORD','any');"
+ "ctxsys.driimp.set_value('STOP_WORD','are');"
+ "ctxsys.driimp.set_value('STOP_WORD','as');"
+ "ctxsys.driimp.set_value('STOP_WORD','at');"
+ "ctxsys.driimp.set_value('STOP_WORD','be');"
+ "ctxsys.driimp.set_value('STOP_WORD','because');"
+ "ctxsys.driimp.set_value('STOP_WORD','been');"
+ "ctxsys.driimp.set_value('STOP_WORD','both');"
+ "ctxsys.driimp.set_value('STOP_WORD','but');"
+ "ctxsys.driimp.set_value('STOP_WORD','by');"
+ "ctxsys.driimp.set_value('STOP_WORD','can');"
+ "ctxsys.driimp.set_value('STOP_WORD','could');"
+ "ctxsys.driimp.set_value('STOP_WORD','d');"
+ "ctxsys.driimp.set_value('STOP_WORD','did');"
+ "ctxsys.driimp.set_value('STOP_WORD','do');"
+ "ctxsys.driimp.set_value('STOP_WORD','does');"
+ "ctxsys.driimp.set_value('STOP_WORD','either');"
+ "ctxsys.driimp.set_value('STOP_WORD','for');"
+ "ctxsys.driimp.set_value('STOP_WORD','from');"
+ "ctxsys.driimp.set_value('STOP_WORD','had');"
+ "ctxsys.driimp.set_value('STOP_WORD','has');"
+ "ctxsys.driimp.set_value('STOP_WORD','have');"
+ "ctxsys.driimp.set_value('STOP_WORD','having');"
+ "ctxsys.driimp.set_value('STOP_WORD','he');"
+ "ctxsys.driimp.set_value('STOP_WORD','her');"
+ "ctxsys.driimp.set_value('STOP_WORD','here');"
+ "ctxsys.driimp.set_value('STOP_WORD','hers');"
+ "ctxsys.driimp.set_value('STOP_WORD','him');"
+ "ctxsys.driimp.set_value('STOP_WORD','his');"
+ "ctxsys.driimp.set_value('STOP_WORD','how');"
+ "ctxsys.driimp.set_value('STOP_WORD','however');"
+ "ctxsys.driimp.set_value('STOP_WORD','i');"
+ "ctxsys.driimp.set_value('STOP_WORD','if');"
+ "ctxsys.driimp.set_value('STOP_WORD','in');"
+ "ctxsys.driimp.set_value('STOP_WORD','into');"
+ "ctxsys.driimp.set_value('STOP_WORD','is');"
+ "ctxsys.driimp.set_value('STOP_WORD','it');"
+ "ctxsys.driimp.set_value('STOP_WORD','its');"
+ "ctxsys.driimp.set_value('STOP_WORD','just');"
+ "ctxsys.driimp.set_value('STOP_WORD','ll');"
+ "ctxsys.driimp.set_value('STOP_WORD','me');"
+ "ctxsys.driimp.set_value('STOP_WORD','might');"
+ "ctxsys.driimp.set_value('STOP_WORD','my');"
+ "ctxsys.driimp.set_value('STOP_WORD','no');"
+ "ctxsys.driimp.set_value('STOP_WORD','non');"
+ "ctxsys.driimp.set_value('STOP_WORD','nor');"
+ "ctxsys.driimp.set_value('STOP_WORD','not');"
+ "ctxsys.driimp.set_value('STOP_WORD','of');"
+ "ctxsys.driimp.set_value('STOP_WORD','on');"
+ "ctxsys.driimp.set_value('STOP_WORD','one');"
+ "ctxsys.driimp.set_value('STOP_WORD','only');"
+ "ctxsys.driimp.set_value('STOP_WORD','onto');"
+ "ctxsys.driimp.set_value('STOP_WORD','or');"
+ ""
+ "ctxsys.driimp.set_value('STOP_WORD','our');"
+ "ctxsys.driimp.set_value('STOP_WORD','ours');"
+ "ctxsys.driimp.set_value('STOP_WORD','s');"
+ "ctxsys.driimp.set_value('STOP_WORD','shall');"
+ "ctxsys.driimp.set_value('STOP_WORD','she');"
+ "ctxsys.driimp.set_value('STOP_WORD','should');"
+ "ctxsys.driimp.set_value('STOP_WORD','since');"
+ "ctxsys.driimp.set_value('STOP_WORD','so');"
+ "ctxsys.driimp.set_value('STOP_WORD','some');"
+ "ctxsys.driimp.set_value('STOP_WORD','still');"
+ "ctxsys.driimp.set_value('STOP_WORD','such');"
+ "ctxsys.driimp.set_value('STOP_WORD','t');"
+ "ctxsys.driimp.set_value('STOP_WORD','than');"
+ "ctxsys.driimp.set_value('STOP_WORD','that');"
+ "ctxsys.driimp.set_value('STOP_WORD','the');"
+ "ctxsys.driimp.set_value('STOP_WORD','their');"
+ "ctxsys.driimp.set_value('STOP_WORD','them');"
+ "ctxsys.driimp.set_value('STOP_WORD','then');"
+ "ctxsys.driimp.set_value('STOP_WORD','there');"
+ "ctxsys.driimp.set_value('STOP_WORD','therefore');"
+ "ctxsys.driimp.set_value('STOP_WORD','these');"
+ "ctxsys.driimp.set_value('STOP_WORD','they');"
+ "ctxsys.driimp.set_value('STOP_WORD','this');"
+ "ctxsys.driimp.set_value('STOP_WORD','those');"
+ "ctxsys.driimp.set_value('STOP_WORD','though');"
+ "ctxsys.driimp.set_value('STOP_WORD','through');"
+ "ctxsys.driimp.set_value('STOP_WORD','thus');"
+ "ctxsys.driimp.set_value('STOP_WORD','to');"
+ "ctxsys.driimp.set_value('STOP_WORD','too');"
+ "ctxsys.driimp.set_value('STOP_WORD','until');"
+ "ctxsys.driimp.set_value('STOP_WORD','ve');"
+ "ctxsys.driimp.set_value('STOP_WORD','very');"
+ "ctxsys.driimp.set_value('STOP_WORD','was');"
+ "ctxsys.driimp.set_value('STOP_WORD','we');"
+ "ctxsys.driimp.set_value('STOP_WORD','were');"
+ "ctxsys.driimp.set_value('STOP_WORD','what');"
+ "ctxsys.driimp.set_value('STOP_WORD','when');"
+ "ctxsys.driimp.set_value('STOP_WORD','where');"
+ "ctxsys.driimp.set_value('STOP_WORD','whether');"
+ "ctxsys.driimp.set_value('STOP_WORD','which');"
+ "ctxsys.driimp.set_value('STOP_WORD','while');"
+ "ctxsys.driimp.set_value('STOP_WORD','who');"
+ "ctxsys.driimp.set_value('STOP_WORD','whose');"
+ "ctxsys.driimp.set_value('STOP_WORD','why');"
+ "ctxsys.driimp.set_value('STOP_WORD','will');"
+ "ctxsys.driimp.set_value('STOP_WORD','with');"
+ "ctxsys.driimp.set_value('STOP_WORD','would');"
+ "ctxsys.driimp.set_value('STOP_WORD','yet');"
+ "ctxsys.driimp.set_value('STOP_WORD','you');"
+ "ctxsys.driimp.set_value('STOP_WORD','your');"
+ "ctxsys.driimp.set_value('STOP_WORD','yours');"
+ ""
+ "ctxsys.driimp.set_object('STORAGE','BASIC_STORAGE',2);"
+ "ctxsys.driimp.set_value('R_TABLE_CLAUSE','lob (data) store as (cache)');"
+ "ctxsys.driimp.set_value('I_INDEX_CLAUSE','compress 2');"
+ ""
+ "commit;"
+ "COMMIT; END;"
+IMP-00003: ORACLE error 6550 encountered
+ORA-06550: line 2, column 1:
+PLS-00306: wrong number or types of arguments in call to 'CREATE_INDEX'
+ORA-06550: line 2, column 1:
+PL/SQL: Statement ignored
+IMP-00088: Problem importing metadata for index INGREDIENT_SNNMS_MV_IDX8. Index creation will be skipped
+IMP-00017: following statement failed with ORACLE error 13011:
+ "CREATE SNAPSHOT "SUBINGREDIENT_MV"  ( "ID","SHORTDESCRIPTIONENG","SHORTDESC"
+ "RIPTIONFR" ) USING ("SUBINGREDIENT_MV", (9, 'SDV11026', 8, 0, 0, "NHPDWEB_O"
+ "WNER", "ORGANISM_PART_TYPES", '2019-11-28:14:53:56', 16, 437228, '2019-11-2"
+ "8:14:53:56', '', 0, 10208015740333, 0, NULL, 1, "NHPDWEB_OWNER", "ORGANISMS"
+ "", '2019-11-28:14:53:56', 16, 437230, '2019-11-28:14:53:56', '', 0, 1020801"
+ "5740333, 0, NULL, 2, "NHPDWEB_OWNER", "ORGANISM_GROUPS", '2019-11-28:14:53:"
+ "56', 16, 437225, '2019-11-28:14:53:56', '', 0, 10208015740333, 0, NULL, 3, "
+ ""NHPDWEB_OWNER", "ORGANISM_PARTS", '2019-11-28:14:53:56', 48, 437226, '2019"
+ "-11-28:14:53:56', '', 0, 10208015740333, 0, NULL, 4, "NHPDWEB_OWNER", "ORGA"
+ "NISM_PART_SUBINGREDIENTS", '2019-11-28:14:53:56', 48, 437227, '2019-11-28:1"
+ "4:53:56', '', 0, 10208015740333, 0, NULL, 5, "NHPDWEB_OWNER", "INGREDIENT_S"
+ "UBINGREDIENTS", '2019-11-28:14:53:56', 48, 437110, '2019-11-28:14:53:56', '"
+ "', 0, 10208015740333, 0, NULL, 6, "NHPDWEB_OWNER", "INGREDIENTS", '2019-11-"
+ "28:14:53:56', 528, 437106, '2019-11-28:14:53:56', '', 0, 10208015740333, 0,"
+ " NULL, 7, "NHPDWEB_OWNER", "SUBINGREDIENTS", '2019-11-28:14:53:56', 65568, "
+ "437268, '2019-11-28:14:53:56', '', 0, 10208015740333, 0, NULL), 2498625, 10"
+ ", ('1950-01-01:12:00:00', 3328, 0, 0, 10208015740333, 0, 18907392, 2, NULL,"
+ " NULL)) REFRESH FORCE AS"
+ "SELECT si.subingred_id AS id,"
+ "          i.ingred_authorized_name_eng"
+ "       || ' ['"
+ "       || DECODE ("
+ "             pi.ingred_authorized_name_eng,"
+ "             NULL,    opt.orgparttype_name_eng"
+ "                   || ' - ('"
+ "                   || o.organism_name"
+ "                   || ')',"
+ "             pi.ingred_authorized_name_eng)"
+ "       || ']'"
+ "          AS shortdescriptioneng,"
+ "          i.ingred_authorized_name_fr"
+ "       || ' ['"
+ "       || DECODE ("
+ "             pi.ingred_authorized_name_fr,"
+ "             NULL,    opt.orgparttype_name_fr"
+ "                   || ' - ('"
+ "                   || o.organism_name"
+ "                   || ')',"
+ "             pi.ingred_authorized_name_fr)"
+ "       || ']'"
+ "          AS shortdescriptionfr"
+ "  FROM ingredients i,"
+ "       subingredients si,"
+ "       ingredients pi,"
+ "       ingredient_subingredients isu,"
+ "       organism_part_subingredients ops,"
+ "       organism_parts op,"
+ "       organism_groups og,"
+ "       organisms o,"
+ "       organism_part_types opt"
+ " WHERE     i.ingred_id = si.ingred_id"
+ "       AND si.subingred_id = isu.subingred_id(+)"
+ "       AND isu.ingred_id = pi.ingred_id(+)"
+ "       AND si.subingred_id = ops.subingred_id(+)"
+ "       AND ops.orgpart_id = op.orgpart_id(+)"
+ "       AND op.organism_id = o.organism_id(+)"
+ "       AND op.org_grp_id = og.org_grp_id(+)"
+ "       AND op.orgparttype_id = opt.orgparttype_id(+)"
+IMP-00003: ORACLE error 13011 encountered
+ORA-13011: value is out of range
+IMP-00017: following statement failed with ORACLE error 12003:
+ "ALTER SNAPSHOT "SUBINGREDIENT_MV" COMPILE"
+IMP-00003: ORACLE error 12003 encountered
+ORA-12003: materialized view "NHPDWEB_OWNER"."SUBINGREDIENT_MV" does not exist
+About to enable constraints...
+Import terminated successfully with warnings.

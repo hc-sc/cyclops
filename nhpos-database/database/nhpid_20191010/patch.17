@@ -1,0 +1,68 @@
+-----------------------------------
+--patch #17
+-- date: 2019/10/17
+-- fixes: DB-222
+----------------------------------
+spool patch_17.log
+prompt Patch 17
+prompt -------------------------------------------
+prompt view v_uom_by_ingred_class_type 
+create or replace force view 
+v_uom_by_ingred_class_type 
+as
+with vu as ( -- "Unit of Measure Types by Ingredient Class and Type" document by Roxane
+select nc.nhpclass_id nhp_class_id,
+       nc.nhpclass_code nhp_class_code,
+       vu.unit_id, vu.unit_code, vu.unit_name_eng, vu.unit_name_fr,
+       vu.unit_type_id, vu.unit_type_code,
+       null role_spec_id, null role_spec_name, vu.preferred
+  from NHP_CLASSIFICATIONS nc,
+       v_units_of_measure vu
+ where vu.unit_type_code in ('IMPD','MASS','PERC','VOLUME')
+    or (vu.unit_type_code = 'BIOU' and nc.nhpclass_code in ('EXT','NHANML','PROB','BACT','ISO','EXT'))
+    or (vu.unit_type_code in ('EQUV','EQUW','MOLE','WGHT') and nc.nhpclass_code = 'MIN')
+    or (vu.unit_type_code = 'INTU' and nc.nhpclass_code in ('VIT','AA','ISO','EXT'))
+    or (vu.unit_type_code = 'MICC' and nc.nhpclass_code in ('FANG','PROB','BACT'))
+    or (vu.unit_type_code = 'QUAS' and nc.nhpclass_code = 'NMI')
+union all
+select null nhp_class_id, null nhp_class_code,
+       vu.unit_id, vu.unit_code, vu.unit_name_eng, vu.unit_name_fr,
+       vu.unit_type_id, vu.unit_type_code,
+       rs.rolespec_id role_spec_id, rs.rolespec_name_eng role_spec_name,
+       vu.preferred
+  from ROLE_SPECIALS rs,
+       v_units_of_measure vu
+ where rs.rolespec_name_eng = 'Non-medicinal'
+   and vu.unit_type_code in ('IMPD','MASS','PERC','VOLUME','QUAS')
+)
+select unique
+       nc.ingred_type_code, -- vp 2019-07-15
+       nc.nhp_class_code, nc.nhp_class_name_eng, nc.nhp_class_name_fr,
+       vu.unit_type_code, vu.unit_code, vu.unit_name_eng, vu.unit_name_fr, vu.preferred,
+       case when nc.nhp_class_code = 'MIN' and vu.unit_type_code in ('EQUV','EQUW','MOLE','WGHT') then 'y'
+            when vu.unit_type_code = 'INTU' and nc.nhp_class_code in ('VIT','AA','ISO','EXT') then 'y'
+            else 'n' end additional_unit
+  from vu, v_ingredient_type nc
+ where vu.nhp_class_code = nc.nhp_class_code
+;
+prompt -------------------------------------------
+prompt compile schema and sgow errors
+
+exec dbms_utility.compile_schema(user);
+
+select object_name, object_type from user_objects where status = 'INVALID';
+
+set linesize 1000 pagesize 9999 trimspool on
+col name for a30
+col line for 99999
+col message_number for 99999
+col text for a512
+select t.name,
+       t.line,
+       t.message_number,
+       t.text
+  from user_errors t
+;
+
+spool off
+

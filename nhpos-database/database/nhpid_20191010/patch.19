@@ -1,0 +1,60 @@
+-----------------------------------
+--patch #19
+-- date: 2019/10/22
+-- fixes: WRLA-458
+----------------------------------
+spool patch_19.log
+prompt Patch 19
+prompt ---------
+prompt view v_units_of_measure
+create or replace force view
+v_units_of_measure
+as
+select u.units_code unit_code, u.units_name_eng unit_name_eng, u.units_name_fr unit_name_fr,
+       ut.unitstype_code unit_type_code, ut.unitstype_name_eng unit_type_name_eng, ut.unitstype_name_fr unit_type_name_fr, 
+       u.units_id unit_id, ut.unitstype_id unit_type_id,
+       null unit_subtype, 
+       u.units_equivalent unit_equivalent, 
+       --u.units_preferred preferred, 
+       case when ut.unitstype_code = 'TIME' and u.units_code = 'd' then 'y'
+            when ut.unitstype_code = 'TIME' and u.units_code = 'h' then 'n'
+            when ut.unitstype_code = 'TIME' and u.units_code = 'min' then 'n'
+            when ut.unitstype_code = 'TIME' and u.units_code = 'mnths' then 'y'
+            when ut.unitstype_code = 'TIME' and u.units_code = 's' then 'n'
+            when ut.unitstype_code = 'TIME' and u.units_code = 'wk' then 'y'
+            when ut.unitstype_code = 'TIME' and u.units_code = 'yr' then 'y'
+            else u.units_preferred end preferred, 
+       case when ut.unitstype_code = 'TIME' and u.units_code = 'd' then 1
+            when ut.unitstype_code = 'TIME' and u.units_code = 'h' then 0.0416
+            when ut.unitstype_code = 'TIME' and u.units_code = 'min' then -1
+            when ut.unitstype_code = 'TIME' and u.units_code = 'mnths' then 30
+            when ut.unitstype_code = 'TIME' and u.units_code = 's' then -1
+            when ut.unitstype_code = 'TIME' and u.units_code = 'wk' then 7
+            when ut.unitstype_code = 'TIME' and u.units_code = 'yr' then 365
+            else u.units_ratio_to_base end ratio_to_base, 
+       null is_diluted
+  from units u, units_types ut
+ where u.unitstype_id = ut.unitstype_id
+;
+
+prompt ---------
+prompt compile schema and show errors
+
+exec dbms_utility.compile_schema(user);
+
+select object_name, object_type from user_objects where status = 'INVALID';
+
+set linesize 1000 pagesize 9999 trimspool on
+col name for a30
+col line for 99999
+col message_number for 99999
+col text for a512
+select t.name,
+       t.line,
+       t.message_number,
+       t.text
+  from user_errors t
+;
+
+spool off
+
