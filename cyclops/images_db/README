@@ -1,0 +1,13 @@
+# The schema
+
+``` json
+{
+    "sha256" : "file shasum: str", 
+    "ocr_result" : "OCR Output: json",
+    "image_raw" : "the image: bytes",
+    "user" : "user who submitted this",
+    "date" : "Time submitted"
+}
+```
+
+The sha can be treated as a primary key.

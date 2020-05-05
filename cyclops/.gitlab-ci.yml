@@ -1,0 +1,79 @@
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - 'which rsync || ( apk add --no-cache rsync )'
+  - eval $(ssh-agent -s)
+  - echo "$CYCLOPS_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+
+image: docker:latest
+
+services:
+- docker:dind
+
+stages:
+#- build
+#- test
+- release
+- deploy
+
+variables:
+  MAPI_TEST_IMAGE:      $CI_REGISTRY/asolism/cyclops/mapi:$CI_COMMIT_REF_NAME
+  MAPI_RELEASE_IMAGE:   $CI_REGISTRY/asolism/cyclops/mapi:latest
+  WEBAPP_TEST_IMAGE:    $CI_REGISTRY/asolism/cyclops/webapp:$CI_COMMIT_REF_NAME
+  WEBAPP_RELEASE_IMAGE: $CI_REGISTRY/asolism/cyclops/webapp:latest
+
+#build:
+#  stage: build
+#  script:
+#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#    - docker pull $MAPI_RELEASE_IMAGE
+#    - cd mapi
+#    - docker build --pull -t $MAPI_TEST_IMAGE .
+#    - cd ..
+#    - docker push $MAPI_TEST_IMAGE
+#    - cd webapp
+#    - docker pull $WEBAPP_RELEASE_IMAGE
+#    - docker build --pull -t $WEBAPP_TEST_IMAGE .
+#    - cd ..
+#    - docker push $WEBAPP_TEST_IMAGE
+
+#test:
+#  stage: test
+#  #before_script:
+#  #  - apk --no-cache add curl
+#  script:
+#    - docker pull $TEST_IMAGE
+#    - docker run $TEST_IMAGE
+#    #- docker run -d -p 8000:80 -e DIGITAL_OCEAN_ACCESS_TOKEN=$DIGITAL_OCEAN_READ_TOKEN --name test_image $TEST_IMAGE
+#    #- sleep 20
+#    #- curl 0.0.0.0:8000
+#    #- docker kill test_image || true
+
+release:
+  stage: release
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd mapi
+    - docker build --pull -t $MAPI_RELEASE_IMAGE .
+    - cd ..
+    - docker push $MAPI_RELEASE_IMAGE
+    - cd webapp
+    - docker build --pull -t $WEBAPP_RELEASE_IMAGE .
+    - cd ..
+    - docker push $WEBAPP_RELEASE_IMAGE
+  only:
+    - master
+
+deploy_staging:
+  type: deploy
+  environment:
+    name: staging
+    url: https://cyclops.happylittlecloud.ca
+  script:
+    - rsync -avh --exclude '.git' . cyclops@cyclops.happylittlecloud.ca:/home/cyclops/cyclops/
+    - ssh cyclops@cyclops.happylittlecloud.ca "sudo systemctl restart cyclops-app.service && exit"
+  only:
+    - master

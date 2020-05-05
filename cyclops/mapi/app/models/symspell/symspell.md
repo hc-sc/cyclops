@@ -1,0 +1,3 @@
+# Spell Check
+Based on SymSpell: https://github.com/wolfgarbe/SymSpell
+Words from OCR will inevitably have spelling errors because it could not recognize a character correctly. If the rest of the characters are recognized correctly then a spell checker can easily fix that based on the vocabulary in the known english and french product examples. In order to quickly clean the text before feeding our classifier we use the symmetric delete spelling correction algorithm called SymSpell. This is magnitudes faster than a python algorithm called fuzzy wuzzy without sacrificing the accuracy. SymSpell is faster because it only does deletion on the spot; no transposes, replaces and inserts. It pre-calculates different combinations in advance.

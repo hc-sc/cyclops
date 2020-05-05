@@ -1,0 +1,10 @@
+werkzeug==0.16.0 
+flask
+flask-dropzone
+flask-session
+gunicorn
+requests
+unidecode
+sqlite-utils
+python-Levenshtein
+filelock

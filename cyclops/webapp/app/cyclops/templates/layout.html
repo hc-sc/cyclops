@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author"   content="Andres Solis Montero">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-4.4.1/css/bootstrap.min.css') }} "  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/dropzone-5.2.0/dropzone.min.css') }} "  >
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/fontawesome-free-5.12.1/css/all.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/gallery-2.36.0/css/blueimp-gallery.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{ url_for('static', filename='vendor/jquery-3.4.1/jquery.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/popper-1.12.9/popper.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap-4.4.1/js/bootstrap.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/dropzone-5.2.0/dropzone.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/json2html-master/json2html.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/json2html-master/jquery.json2html.js') }}" ></script>
+    <script src="{{ url_for('static', filename='vendor/gallery-2.36.0/js/blueimp-gallery.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='main.js') }}" ></script>
+ 
+    {% block local_dependencies %} {% endblock %}
+    
+    {% if title %}
+        <title>Cyclops - {{ title }}</title>
+    {% else %}
+        <title>Cyclops </title>
+    {% endif %}
+</head>
+<body>
+     
+    <header class="site-header">
+      <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container_cyclops">
+          <a class="navbar-brand mr-4" href="{{ url_for('clear') }}">Cyclops</a>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container_cyclops d-flex flex-column py-5">
+     
+        {% block navigation %}{% endblock %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+             {% if messages %}
+                 {% for category, message in messages %}
+                     <div class='alert alert-{{category}} alert-dismissible fade show mb-3'> {{message}}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                     </div>
+                 {% endfor %}
+             {% endif %}
+        {% endwith %}
+
+       {% block content %}{% endblock %}
+     
+      
+        <div id="blueimp-gallery" class="blueimp-gallery">
+          <div class="slides"></div>
+          <h3 class="title"></h3>
+          <a class="prev">‹</a>
+          <a class="next">›</a>
+          <a class="close">×</a>
+          <a class="play-pause"></a>
+          <ol class="indicator"></ol>
+        </div>
+    </main>
+     <!-- /.container -->
+     <!-- The Gallery as lightbox dialog, should be a document body child element -->
+     
+     <!-- Footer -->
+    <footer class="fixed-bottom">
+      <div class = "py-3 bg-dark">
+      <div class="container">
+         <small>
+          <p class="m-0  text-center text-white"> Copyright &copy; 2020  </p>
+         </small>
+      </div>
+    </div>
+    </footer>
+
+    
+</body>
+</html>

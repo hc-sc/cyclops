@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+
+{% block navigation %} 
+    {% include "navigation.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include "gallery.html" %}    
+
+
+<div id="content" class="h-100 mx-auto my-auto">
+    <div class="d-flex justify-content-center ">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+</div>
+
+
+ 
+<script>
+    $( document ).ready(function() {
+
+        var product_proposal = null;
+
+        $.get("{{ url_for('get_ingredient_info') }}", function(response){
+            product_proposal = response;
+            initialize();
+        });
+        //timeout and interval are in main.js
+        function update_ingredients(){
+            postJson("{{ url_for('update_ingredients') }}", product_proposal, function(response){
+                product_proposal = response;
+                initialize();
+            })
+        }
+        function callback() {
+            clearTimeout(timeout);
+            timeout = setTimeout(update_ingredients, interval);
+        }
+        
+
+        function initialize(){
+            var transform = [
+                {"<>":"div", "id":"sproduct"},
+                {"<>":"div","class":"row mb-5","html":[
+                    {"<>":"div","class":"col-md-12 col-lg-6 col-xl-4","id":"found_container","html":""},
+                    {"<>":"div","class":"col-md-12 col-lg-6 col-xl-4","id":"missing_container","html":""},
+                    {"<>":"div","class":"col-md-12 col-lg-12 col-xl-4","id":"matched_container","html":""}
+                    ]}
+                ];
+
+            $('#content').html('');
+            $('#content').removeClass('h-100 mx-auto my-auto');
+            $('#content').json2html([product_proposal], transform);
+            selected_product(product_proposal, {'container':'#sproduct'});
+            
+            var found_container   = null;
+            var missing_container = null;
+            var matched_container = null;
+
+            var found_opts = {
+                "container": "#found_container",
+                "title" : "From Uploaded Images",
+                "card_header_class":  "card-header text-white bg-primary",
+                "header": [
+                    {
+                        "label"   :"Ingredient",  
+                        "field"   :"ingredient_name",      
+                        "editable":true,  
+                        "type"    :"input", 
+                        "i"       :"fas fa-trash", 
+                        "iclass"  :"btn border-0 btn-outline-danger",
+                        "callback": function(e){}
+                    },
+                    {"label":"PDL",        "field":"_pdl",       "editable":true,  "type":"checkbox"},
+                    {"label":"CDSA",       "field":"_cdsa",      "editable":true,  "type":"checkbox"},
+                    {"label":"Medicinal",  "field":"_medicinal", "editable":true,  "type":"checkbox"}
+                ],
+                "actions": [
+                    {"label":"Delete", "class":"btn btn-sm btn-outline-danger ml-3 my-2",   "callback": function(e){}, 'modify_data':true},
+                    {"label":"Add",    "class":"btn btn-sm btn-outline-info ml-2 my-2",     "callback": function(e){
+
+                        var ingredient_name = prompt("Enter new ingredient");
+                        if (ingredient_name != null){
+                            found_container.addElement({
+                                "ingredient_name": ingredient_name,
+                                "_pdl":false,
+                                "_cdsa":false,
+                                "_medicinal":false
+                            })
+                        }
+
+                    }, 'modify_data':false}
+                ],
+                "data": product_proposal.medical_data_diff.found ,
+                "update": callback
+            }
+            var missing_opts = {
+                "container": "#missing_container",
+                "title" : "From LNHPD Database",
+                "card_header_class":  "card-header bg-warning",
+                "header": [
+                    {
+                        "label"   :"Ingredient",  
+                        "field"   :"ingredient_name",      
+                        "editable":false,  
+                        "type"    :"input", 
+                        "i"       :"fas fa-plus", 
+                        "iclass"  :"btn border-0 btn-outline-success",
+                        "callback": function(e){ 
+                                matched_container.addElement(e); 
+                        }
+                    },
+                    {"label":"PDL",        "field":"_pdl",       "editable":false,  "type":"checkbox"},
+                    {"label":"CDSA",       "field":"_cdsa",      "editable":false,  "type":"checkbox"},
+                    {"label":"Medicinal",  "field":"_medicinal", "editable":false,  "type":"checkbox"}
+                ],
+                "actions": [
+                    {"label":"Move to Matched",    "class":"btn btn-sm btn-outline-success mx-3 my-2",  "callback": function(e){
+                        matched_container.addElements(e); 
+                    }, 'modify_data':true}
+                ],
+                "data": product_proposal.medical_data_diff.missing ,
+                "update": callback 
+            }
+            var matched_opts = {
+                "container": "#matched_container",
+                "title" : "Matched Ingredients",
+                "card_header_class":  "card-header text-white bg-success",
+                "header": [
+                    {
+                        "label"   :"Ingredient",  
+                        "field"   :"ingredient_name",      
+                        "editable":false,  
+                        "type"    :"input", 
+                        "i"       :"fas fa-trash", 
+                        "iclass"  :"btn border-0 btn-outline-danger",
+                        "callback": function(e){
+                            missing_container.addElement(e);
+                        }
+                    },
+                    {"label":"PDL",        "field":"_pdl",       "editable":false,  "type":"checkbox"},
+                    {"label":"CDSA",       "field":"_cdsa",      "editable":false,  "type":"checkbox"},
+                    {"label":"Medicinal",  "field":"_medicinal", "editable":false,  "type":"checkbox"}
+                ],
+                "actions": [
+                    {"label":"Remove from Matched",    "class":"btn btn-sm btn-outline-danger mx-3 my-2",  "callback": function(e){
+                        missing_container.addElements(e);
+                    }, 'modify_data':true}
+                ],
+                "data": product_proposal.medical_data_diff.matched ,
+                "update": callback
+            }
+            
+            var found_container   =  new table_section(found_opts);
+            var missing_container =  new table_section(missing_opts);
+            var matched_container =  new table_section(matched_opts);
+        }
+
+    });
+</script>
+
+{% endblock content%}
+

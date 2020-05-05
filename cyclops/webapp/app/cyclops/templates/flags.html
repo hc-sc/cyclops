@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block navigation %} 
+    {% include "navigation.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% include "gallery.html" %}    
+
+
+<div id="content" class="h-100 mx-auto my-auto">
+    <div class="d-flex justify-content-center ">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+</div>
+
+
+ 
+<script>
+    $( document ).ready(function() {
+
+        var product_proposal = null;
+
+        $.get("{{ url_for('get_flags_info') }}", function(response){
+            product_proposal = response;
+            initialize();
+        });
+
+        //timeout and interval are in main.js
+        function update_ingredients(){
+            postJson("{{ url_for('update_flags') }}", product_proposal, function(response){
+                product_proposal = response;
+                initialize();
+            })
+        }
+        function callback() {
+            clearTimeout(timeout);
+            timeout = setTimeout(update_ingredients, interval);
+        }
+
+        function initialize(){
+            var transform = [
+                {"<>":"div","id":"sproduct","html":""},
+                {"<>":"div","class":"row mb-5","html":[
+                        {"<>":"div","class":"col-md-12","id":"warning_container","html":""}
+                    ]}
+                ];
+
+            $('#content').html('');
+            $('#content').removeClass('h-100 mx-auto my-auto');
+            $('#content').json2html([product_proposal], transform);
+            selected_product(product_proposal, {'container':'#sproduct'});
+            
+            var warnings_container   = null;
+         
+
+            var warnings_opts = {
+                "container": "#warning_container",
+                "title" : "Words From Uploaded Images",
+                "card_header_class":  "card-header text-white bg-secondary",
+                "header": [
+                    {
+                        "label"   :"Word",  
+                        "field"   :"ocr_word",      
+                        "editable":true,  
+                        "type"    :"input", 
+                        "i"       :"fas fa-trash", 
+                        "iclass"  :"btn border-0 btn-outline-danger",
+                        "callback": function(e){}
+                    },
+                    {"label":"Schedule A",        "field":"_schedule_a",       "editable":true,  "type":"checkbox"},
+                    {"label":"Injectable",        "field":"_injectable",       "editable":true,  "type":"checkbox"},
+                ],
+                "actions": [
+                    {"label":"Delete", "class":"btn btn-sm btn-outline-danger ml-3 my-2",   "callback": function(e){}, 'modify_data':true},
+                    {"label":"Add",    "class":"btn btn-sm btn-outline-info ml-2 my-2",     "callback": function(e){
+
+                        var word_name = prompt("Enter new Word");
+                        if (word_name != null){
+                            warnings_container.addElement( {
+                                         "raw_ocr_word": word_name,
+                                         "ocr_word":    word_name,
+                                         "coordinates": [],     
+                                         "filename":    '',                        
+                                         "classifier_class":       -1,                
+                                         "ocr_match_class":       [],       
+                                         "symspell_match_class":   [],  
+                                         "bigram_match_class": [],  
+                                         "_schedule_a": false,            
+                                         "_injectable": false}
+
+                            )
+                        }
+
+                    }, 'modify_data':false}
+                ],
+                "data": product_proposal.warnings ,
+                "update":callback
+            }
+            
+            var warnings_container   =  new table_section(warnings_opts);
+        }
+   
+    });
+</script>
+
+{% endblock content%}
+

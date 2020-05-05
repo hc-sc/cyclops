@@ -1,0 +1,43 @@
+data
+├── [4.0K]  classifier
+│   ├── [129M]  Train_and_Test_with_AnnotatedDataset_s20_epoch27_lr_0.03.pth
+│   └── [2.0M]  word_dict.pickle
+├── [4.0K]  font
+│   └── [755K]  Arial.ttf
+├── [ 57M]  lnhpd.db
+├── [4.0K]  OCR
+│   ├── [4.0K]  CRAFT_pkg
+│   │   ├── [ 79M]  craft_mlt_25k.pth
+│   │   └── [1.8M]  craft_refiner_CTW1500.pth
+│   └── [4.0K]  RECOG_pkg
+│       └── [189M]  TPS-ResNet-BiLSTM-Attn.pth
+├── [4.0K]  partitioned_final_data
+│   ├── [4.0K]  character_dict
+│   │   ├── [ 897]  char_index.pickle
+│   │   └── [ 897]  index_char.pickle
+│   ├── [4.0K]  primary_word_data
+│   │   ├── [2.5M]  pd_ind_to_word_dictionary.pickle
+│   │   ├── [ 56M]  pd_ind_to_word_embd_dictionary.pickle
+│   │   ├── [4.8M]  pd_word_to_ind_dictionary.pickle
+│   │   └── [ 57M]  pd_word_to_word_embd_dictionary.pickle
+│   ├── [4.0K]  primary_word_data_oov
+│   │   ├── [2.1M]  oov_pd_ind_to_word_dictionary.pickle
+│   │   └── [3.9M]  oov_pd_word_to_ind_dictionary.pickle
+│   └── [4.0K]  primary_word_data_pretrained
+│       ├── [403K]  pre_pd_ind_to_word_dictionary.pickle
+│       ├── [ 54M]  pre_pd_ind_to_word_embd_dictionary.pickle
+│       ├── [892K]  pre_pd_word_to_ind_dictionary.pickle
+│       └── [ 54M]  pre_pd_word_to_word_embd_dictionary.pickle
+└── [4.0K]  symspell
+    ├── [ 11M]  all_class_spell_checker_without_non_npn_digits.pickle
+    └── [4.0K]  Vocabulary
+        ├── [ 14M]  extracted_claims.txt
+        ├── [3.7M]  extracted_companyaddress.txt
+        ├── [1.9M]  extracted_companynames.txt
+        ├── [3.7M]  extracted_dose.txt
+        ├── [ 22M]  extracted_medicinal.txt
+        ├── [5.9M]  extracted_nonmedicinal.txt
+        ├── [868K]  extracted_npn.txt
+        └── [4.8M]  extracted_productnames.txt
+
+12 directories, 28 files
