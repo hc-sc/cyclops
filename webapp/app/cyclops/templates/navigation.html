@@ -1,0 +1,86 @@
+{% set navigation = [
+    ('clear',       'Upload'     ,'Back', 'Next'),
+    ('product',     'Product'    ,'Back', 'Next'),
+    ('ingredients', 'Ingredients','Back', 'Next'),
+    ('claims',      'Claims'     ,'Back', 'Next'),
+    ('flags',       'Flags'      ,'Back', 'Next'),
+    ('report',      'Report'     ,'Back', 'New'),
+    ('clear',       'Clear'      ,'Back', 'Next')
+    ]
+%}
+
+
+<div class="card my-4 sticky-top">
+    <div class="d-md-none">
+        <nav class="navbar navbar-expand-md p-0 pl-2">
+            <button class="navbar-toggler" style="font-size:1rem;" type="button" data-toggle="collapse" data-target="#collapsable" aria-controls="collapsable" aria-expanded="false" >
+                <i class="fas fa-bars"></i>
+            </button>
+            {% for href, value, back_label, next_label in navigation %}
+                {% if request.path == url_for(href)     %} 
+                <a class="nav-link pl-1"          href=" {{ url_for(navigation[loop.index-2][0])}} ">  {{back_label}}  </a>
+                <a class="nav-link ml-auto mr-2"  href=" {{ url_for(navigation[loop.index][0])}}">     {{next_label}}   </a>
+                {% endif %}
+            {% endfor %}
+            <div class="collapse  navbar-collapse " id="collapsable">
+                <ul class="navbar-nav px-5">
+                {% for href, value, back_label, next_label in navigation %}
+                    {% if not loop.last %}
+                    <li class="nav-item">
+                    {% if request.path == url_for(href)     %} 
+                        <a class="nav-link disabled" href="#">{{ value }}</a>      
+                    {% else %}
+                        <a class="nav-link" href=" {{ url_for(href)}}">{{ value }}</a>
+                    {% endif %}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+
+    <div class="d-none d-md-block">
+        <nav class="navbar navbar-expand-md p-0">
+        <ol class="navbar-nav breadcrumb bg-transparent m-0 w-100 ">
+            {% for href, value, back_label, next_label in navigation %}
+                {% if request.path == url_for(href)     %} 
+                <li class="breadcrumb-item mr-auto">
+                    <a href=" {{ url_for(navigation[loop.index-2][0])}} ">  {{back_label}}  </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% for href, value, back_label, next_label in navigation %}
+                <li class="breadcrumb-item">
+                    {% if not loop.last %}
+                        {% if request.path == url_for(href)     %} 
+                            {{ value }}  
+                        {% else %}
+                            <a  href=" {{ url_for(href)}}">{{ value }} </a>
+                        {% endif %}
+                        {% if  loop.index < navigation|length-1 %}
+                            <i class="fas fa-angle-right ml-2"></i>
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+
+            {% for href, value, back_label, next_label in navigation %}
+                {% if request.path == url_for(href)     %} 
+                <li class="breadcrumb-item ml-auto">
+                    <a href=" {{ url_for(navigation[loop.index][0])}} ">  {{next_label}}  </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+           
+        </ol>
+        </nav>
+    </div>
+</div>
+
+   

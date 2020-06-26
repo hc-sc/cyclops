@@ -1,0 +1,11 @@
+werkzeug==0.16.0 
+flask
+flask-dropzone
+flask-session
+gunicorn
+requests
+unidecode
+sqlite-utils
+python-Levenshtein
+filelock
+flask-reverse-proxy-fix==0.2.1

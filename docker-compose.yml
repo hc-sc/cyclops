@@ -1,0 +1,60 @@
+version: '3'
+services:
+    webapp:
+        container_name: sfe-cyclops-webapp
+        # TODO: image: jack.hc-sc.gc.ca/sfe/cyclops/webapp:latest
+        image: sfe-cyclops/webapp
+        restart: always
+        ports:
+            - 5000:5000
+            - 8000:8000
+        networks:
+            - net-sfe-dev
+        environment:
+            MAPI_URL: http://mapi:9000
+        build:
+            context: ./webapp
+    mapi:
+        container_name: sfe-cyclops-mapi
+        # TODO: image: jack.hc-sc.gc.ca/sfe/cyclops/mapi:latest
+        image: sfe-cyclops/mapi
+        restart: always
+        expose:
+            - 9000
+        ports:
+            - 9000:9000
+        networks:
+            - net-sfe-dev
+        volumes:
+            - ./data:/data
+        environment:
+            # MONGO_MAPI_URL: "mongodb-imagecache.default.svc.cluster.local:27017"
+            MONGO_MAPI_USER: cyclops
+            MONGO_URL: mongo
+            MONGO_MAPI_DB: images
+            MONGO_MAPI_PASS: "temporary_password"
+        build:
+            context: ./mapi
+        depends_on:
+            - mongo
+    mongo:
+        container_name: sfe-cyclops-mongo
+        image: mongo:latest # TODO: Pull from artifactory?
+        restart: always
+        environment:
+            MONGO_MAPI_USER: cyclops
+            MONGO_MAPI_DB: images
+            MONGO_MAPI_PASS: "temporary_password"
+        expose:
+            - 27017
+        #ports:
+        #    - 27017:27017
+        networks:
+            - net-sfe-dev
+        volumes:
+            - ./images_db/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+            #- ./images_db/data:/data/db
+
+networks:
+    net-sfe-dev:
+        external: true

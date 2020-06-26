@@ -1,0 +1,210 @@
+{% extends "layout.html" %}
+{% block local_dependencies %} 
+<script src=" {{ url_for('static', filename='vendor/html2pdf.js-0.9.2/html2pdf.bundle.min.js') }}" ></script>
+{% endblock %}
+
+{% block navigation %} 
+    {% include "navigation.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<div id="loader" class="h-100 mx-auto my-auto">
+    <div class="d-flex justify-content-center ">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+</div>
+
+
+<script>
+    $( document ).ready(function() {
+        var main_container   = '#loader';
+        var report_data      = null;
+        
+        var sections = [
+            {'label':'Uploaded Images', 'id':'imgs_container', 'class':'links'},
+            {'label':'Product',         'id':'prd_container' , 'class':'pdf_page_break'},
+            {'label':'Flags',           'id':'flags_container', 'class':''},
+            {'label':'Ingredients',     'id':'ingr_container', 'class':'pdf_page_break'},
+            {'label':'Claims',          'id':'clms_container', 'class':'pdf_page_break'}
+        ];
+
+        $.get(" {{ url_for('get_report_info') }}", function(response){
+            report_data = response;
+            format_report();
+        });
+        
+        
+        function format_report() {
+            var transform = {
+                "main": {"<>":"div","class":"card shadow-sm container mb-5","html":[
+                        {"<>":"div","class":"card-body","html":[
+                            {"<>":"button","class":"btn btn-info float-right","id":"download","html":[
+                                {"<>":"i","class":"far fa-file-pdf","html":" Download Pdf"}
+                            ]},
+                            {"<>":"div","id":"content","html":function(o){
+                                return $.json2html(sections, transform.section)
+                            }}
+                        ]}
+                ]},
+                "section": [
+                        {"<>":"div","class":"${class}"},
+                        {"<>":"h5","class":"border-bottom text-dark border-secondary my-4 ","html":"${label}"},
+                        {"<>":"div","class":"px-3", "id":"${id}"}
+                ], 
+                "ingredient_report":[
+                    {"<>":"h6", "class":"font-weight-bold", "html":"Details"},
+                    {"<>":"ul", "html":[
+                        {"<>":"li", "html":"Total of <b>${total}</b> ingredient(s) found."},
+                        {"<>":"li", "html":"<b>${matched}</b> matched ingredient(s)."},
+                        {"<>":"li", "html":"<b>${missing}</b> missing ingredient(s) from database (i.e., not found in images)."},
+                        {"<>":"li", "html":"<b>${found}</b>   added ingredient(s) (i.e., not found in database)."},
+                        
+                        {"<>":"li", "html":"<b>${medicinal}</b> ingredient(s) flagged as Medicinal."},
+                        {"<>":"li", "html":"<b>${cdsa}</b>      ingredient(s) flagged as CDSA."},
+                        {"<>":"li", "html":"<b>${pdl}</b>       ingredient(s)  flagged as PDL."}
+                    ]}
+                ], 
+                "claim_report":[
+                    {"<>":"h6","class":"font-weight-bold", "html":"Details"},
+                    {"<>":"ul", "html":[
+                        {"<>":"li", "html":"Total of ${total} claim(s) found."},
+                        {"<>":"li", "html":"${matched} matched claim(s)."},
+                        {"<>":"li", "html":"${missing} missing claim(s) from database (i.e., not found in images)."},
+                        {"<>":"li", "html":"${found}   added claim(s) (i.e., not found in database)."},
+                        
+                        {"<>":"li", "html":"${compliant} claim(s) flagged as Compliant."}
+                    ]}
+                ],
+                "remark": {"<>":"li", "class":"col-sm-6", "html":[
+                                {"<>":"b", "class":"", 'html':'${remark}'},
+                                {"<>":"p", "class":"",'html':'${description}'}
+                ]},
+                "flags_report":{"<>":"ul", "class":"row", "html":function(o){
+                    return $.json2html(o, transform.remark);
+                }}
+            };
+            $(main_container).removeClass('h-100 row mx-auto my-auto');
+            $(main_container).html('');
+            $(main_container).json2html([1],transform.main);
+
+            //UPLOADED IMAGES
+            display_images({
+                "container": '#'+ sections[0].id, 
+                "data"     : report_data.files
+            });
+
+            //PRODUCT 
+            display_product({
+                "container": '#'+ sections[1].id,
+                "data"     : report_data.product_proposal
+            });
+
+            $('#'+sections[2].id).json2html([flags_stats(report_data)], transform.flags_report);
+            //INGREDIENTS
+            var ingr_options ={
+                "header": [
+                    {'label':'Ingredient', 'type':'text',     'field':'ingredient_name', "class":"w-50"},
+                    {'label':'PDL',        'type':'checkbox', 'field':'_pdl', "class":"text-center"},
+                    {'label':'CDSA',       'type':'checkbox', 'field':'_cdsa', "class":"text-center"},
+                    {'label':'Medicinal',  'type':'checkbox', 'field':'_medicinal', "class":"text-center "}
+                ], 
+                "hclass": "table-success",
+                "container": '#' + sections[3].id, 
+                "data": null
+            }
+           
+            $(ingr_options.container).json2html(ingredient_stats(report_data), transform.ingredient_report);
+            
+            if (report_data.product_proposal.medical_data_diff)
+            {
+                medical_data_diff = report_data.product_proposal.medical_data_diff
+                ingr_options.hclass = 'table-primary';
+                ingr_options.data   = medical_data_diff.found
+                ingr_options.caption= 'From images (i.e., not in database).';
+                display_table(ingr_options);
+
+                ingr_options.hclass = 'table-success';
+                ingr_options.caption= 'Matched (i.e., between images and database).';
+                ingr_options.data   = medical_data_diff.matched
+                display_table(ingr_options);
+
+                ingr_options.hclass = 'table-warning';
+                ingr_options.data   = medical_data_diff.missing
+                ingr_options.caption= 'From database (i.e., not in images).';
+                display_table(ingr_options);
+            }
+
+            //CLAIMS
+            var claim_options ={
+                "header": [
+                    {'label':'Claim',          'type':'text',     'field':'purpose',    "class":"w-75"},
+                    {'label':'Compliant',      'type':'checkbox', 'field':'_compliant', "class":"w-75 text-center"}
+                ], 
+                "hclass": "",
+                "container": '#' + sections[4].id, 
+                "data": null
+            }
+
+            $(claim_options.container).json2html(claim_stats(report_data), transform.claim_report);
+
+            if (report_data.product_proposal.claim_data_diff)
+            {
+                claim_data_diff = report_data.product_proposal.claim_data_diff;
+                claim_options.hclass = 'table-primary';
+                claim_options.caption= 'From images (i.e., not in database).';
+                claim_options.data   = claim_data_diff.found
+                display_table(claim_options);
+
+                claim_options.hclass = 'table-success';
+                claim_options.caption= 'Matched (i.e., between images and database).';
+                claim_options.data   = claim_data_diff.matched
+                display_table(claim_options);
+                
+                claim_options.hclass = 'table-warning';
+                claim_options.caption= 'From database (i.e., not in images).';
+                claim_options.data   = claim_data_diff.missing
+                display_table(claim_options);
+            }
+            
+
+            
+            //Download ACTION
+            
+            $('#download').click(function(e){
+                var element = document.getElementById('content');
+                var opt = {
+                    margin:       1,
+                    filename:     'myfile.pdf',
+                    image:        { type: 'jpeg', quality: 1.0 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak:    { mode: ['avoid-all', 'css'], before: '.pdf_page_break'}
+                };
+                html2pdf().set(opt).from(element).save();
+            });
+
+        }
+        
+    });
+    
+</script>
+
+
+{% endblock content%}
+

@@ -1,0 +1,27 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <i class="fas fa-bars mr-2" data-toggle="collapse" data-target="#links"></i>  Uploaded Images 
+    </div>
+    <div class="card-body collapse" id="links">
+        {% for filename in uploaded %}
+        <a href=" {{ url_for('image', img=filename) }}" >
+            <img src=" {{ url_for('image', img=filename) }}" style="width:100px;" >
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    $( document ).ready(function() {
+        
+        $('#links').click(function(event) {
+            event       = event        || window.event
+            var target  = event.target || event.srcElement;
+            var link    = target.src ? target.parentNode : target;
+            var options = { index: link, event: event };
+            var links   = $('#links a');
+            blueimp.Gallery(links, options)
+        });
+       
+    });
+</script>

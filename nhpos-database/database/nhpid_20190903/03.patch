@@ -1,8 +1,0 @@
---03.patch
---author:  Ramy Ghonaim
---date:    09/12/2019
---ticket:  DB-117 WPLA-305
-
-insert into X$SUB_POP_AGE_GROUPS (AGE_GROUP_ID, AGE_GROUP, AGE_GROUP_FR, AGE_GROUP_CODE, AGE_MIN, AGE_MAX, AGE_UNIT_ID) values (94, 'Neonates', 'Neonates', 'NNT', 0, 4, 167);
---
-insert into X$SUB_POP_GROUP_AGE_GROUPS (AGE_GROUP_ID, GROUP_ID) values (94, 1);
