@@ -38,8 +38,9 @@ RUN wget http://www.leptonica.org/source/leptonica-1.79.0.tar.gz && \
     make install 
 
 WORKDIR /tmp/
-RUN git clone --depth=1 https://github.com/tesseract-ocr/tesseract.git && \
+RUN git clone https://github.com/tesseract-ocr/tesseract.git && \
     cd tesseract && \
+    git checkout cdebe13 && \
     ./autogen.sh && \
     ./configure --enable-debug && \
     LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make && \

@@ -78,7 +78,7 @@ def classify_images(test_custom_dataset,graph_ie_df):
         'BATCH_SIZE':1,
         'LEARNING_RATE':0.03,
         'NUM_EPOCHS':200,
-        'model_dir' : f'{DATA_DIR}/classifier/Train_and_Test_with_AnnotatedDataset_s20_epoch27_lr_0.03.pth',
+        'model_dir' : f'{DATA_DIR}/classifier/Train_and_Test_with_AnnotatedDataset_BestModel.pth',
         'plt_dir':'plot/test_1/'
 
     }
