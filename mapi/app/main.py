@@ -15,6 +15,7 @@ from fastapi import Body, FastAPI, Query, File, UploadFile
 from models.aicore  import AICore
 from models.lnhpd   import LNHPD
 from pydantic import BaseModel
+from wand.image import Image
 
 from tempfile import NamedTemporaryFile
 from pathlib  import Path
@@ -65,19 +66,40 @@ class Product(BaseModel):
     company_name: str
     product_name: str
 
+async def convert_pdf(filename, output_path=UPLOAD_FILE, resolution=600):
+    """ Convert a PDF into PNG images. """
 
+    all_pages = Image(filename=filename, resolution=resolution)
+    for i, page in enumerate(all_pages.sequence):
+        with Image(page) as img:
+            img.format = 'png'
+            image_filename = os.path.splitext(os.path.basename(filename))[0]
+            image_filename = '{}-{}.png'.format(image_filename, i)
+            image_filename = os.path.join(output_path, image_filename)
+
+            img.save(filename=image_filename)
 
 @app.post("/upload")
 async def upload(file: List[UploadFile] = File(...)):
     paths =[]
     for f in file:
+        if f.content_type == "application/pdf":
+            convert_pdf(filename=os.path.join(UPLOAD_FILE, f.filename))
+    for f in file:
         suffix = f.filename
-        try:
-            with NamedTemporaryFile(delete=False, suffix=f"_{suffix}") as tmp:
-                shutil.copyfileobj(f.file, tmp)
-                paths.append(tmp.name)
-        finally:
-            f.file.close()
+        if f.content_type == "application/pdf":
+            images = Image(file=f.file, resolution=600)
+            for i, page in enumerate(images.sequence):
+                with Image(page) as img:
+                    with NamedTemporaryFile(delete=False, suffix=f"_{i}-{suffix}") as tmp:
+                        img.save(tmp)
+        else:
+            try:
+                with NamedTemporaryFile(delete=False, suffix=f"_{suffix}") as tmp:
+                    shutil.copyfileobj(f.file, tmp)
+                    paths.append(tmp.name)
+            finally:
+                f.file.close()
     
     proposal = AICore.extract(*paths)
     
