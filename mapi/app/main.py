@@ -66,25 +66,9 @@ class Product(BaseModel):
     company_name: str
     product_name: str
 
-async def convert_pdf(filename, output_path=UPLOAD_FILE, resolution=600):
-    """ Convert a PDF into PNG images. """
-
-    all_pages = Image(filename=filename, resolution=resolution)
-    for i, page in enumerate(all_pages.sequence):
-        with Image(page) as img:
-            img.format = 'png'
-            image_filename = os.path.splitext(os.path.basename(filename))[0]
-            image_filename = '{}-{}.png'.format(image_filename, i)
-            image_filename = os.path.join(output_path, image_filename)
-
-            img.save(filename=image_filename)
-
 @app.post("/upload")
 async def upload(file: List[UploadFile] = File(...)):
     paths =[]
-    for f in file:
-        if f.content_type == "application/pdf":
-            convert_pdf(filename=os.path.join(UPLOAD_FILE, f.filename))
     for f in file:
         suffix = f.filename
         if f.content_type == "application/pdf":
