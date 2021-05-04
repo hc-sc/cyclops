@@ -21,7 +21,8 @@ app.config['SESSION_TYPE']  = 'filesystem'
 
 
 # Flask-Dropzone config:
-app.config['DROPZONE_ALLOWED_FILE_TYPE'] = 'image'
+app.config['DROPZONE_ALLOWED_FILE_CUSTOM'] = True
+app.config['DROPZONE_ALLOWED_FILE_TYPE'] = 'image/*, .pdf'
 app.config['DROPZONE_MAX_FILE_SIZE']     = 10
 app.config['DROPZONE_MAX_FILES']         = 5
 app.config['DROPZONE_UPLOAD_MULTIPLE']   = True
